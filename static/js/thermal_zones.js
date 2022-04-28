@@ -13,19 +13,9 @@ zones_select.onchange = function () {
     let initial = $('tr.td-zone_1')
     let t1 = initial[0]
     let t2 = initial[1]
+    clear(t1, t2)
 
-    if (zones_select.value === '1') {
-        clear(t1, t2)
-    } else {
-        clear(t1, t2)
-
-        // while (current_row.toString() !== zones_select.value.toString()) {
-        //     console.log(current_row)
-        //     $('#table-zones-time tbody').append(t1)
-        //     $('#table-zones-coef tbody').append(t2)
-        //     current_row = check_len()
-        // }
-
+    if (zones_select.value !== '1') {
         for (let current_row = 1; current_row < Math.floor(zones_select.value); current_row++) {
             console.log(current_row)
             let t_time = initial[0].cloneNode(true)
@@ -55,10 +45,5 @@ zones_select.onchange = function () {
             $('#table-zones-time tbody').append(t_time)
             $('#table-zones-coef tbody').append(t_coef)
         }
-        // let t_time = t1.cloneNode(true)
-        // console.log(t_time)
-        // let t_coef = t2.cloneNode(true)
-        // $('#table-zones-time tbody').append(t_time)
-        // $('#table-zones-coef tbody').append(t_coef)
     }
 }

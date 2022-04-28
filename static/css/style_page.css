@@ -1,0 +1,38 @@
+body {
+    margin: 0 auto;
+}
+
+.div1 h3, .div2 h3 {
+    text-decoration: underline;
+    align-items: center;
+    align-self: center;
+    width: 80%;
+    text-align: center;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.parent {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-content: flex-start;
+    align-items: flex-start;
+    margin: 12px 25px;
+}
+
+.div1 {
+    padding: 12px;
+    max-width: 340px;
+    flex: 1 1 auto;
+    margin-bottom: 12px;
+}
+
+.div-results {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-content: flex-start;
+    flex: 10 1 auto;
+    margin: 0 10px;
+}

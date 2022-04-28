@@ -17,7 +17,8 @@
 
 <body class="d-flex flex-column min-vh-100" style="background-position: 0 -60px;">
 <nav class="navbar navbar-light navbar-expand-md fixed-top navbar-shrink py-3" id="mainNav">
-    <div class="container"><a class="navbar-brand d-flex align-items-center" href="/"><span style="text-align: center;"><img
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="/"><span style="text-align: center;"><img
             src="{% static 'img/Severstal_Unity_Blue_RGB.png' %}"
             style="width: 27px;height: 27px;margin-right: 8px;margin-bottom: 6px;">Калькуляторы</span></a>
         <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span
@@ -98,18 +99,26 @@
 </footer>
 
 {% block additional_js %} {% endblock %}
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/script.min.js' %}"></script>
+<!-- Loading CSS -->
+<div class="loader-wrapper loader-flex">
+    <span class="loader"><span class="loader-inner"></span></span>
+</div>
 
 <script>
     $(".loader-wrapper").hide();
     document.querySelector("#submit-form").onsubmit = function () {
         $('html,body').scrollTop(0);
         $("#content").hide();
+        $(".container").hide();
         $(".loader-wrapper").show();
     }
 </script>
-<script src="{% static 'js/jquery.min.js' %}"></script>
-<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'js/script.min.js' %}"></script>
+<!-- Loading CSS -->
+
+
 </body>
 
 </html>
