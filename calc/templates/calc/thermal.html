@@ -10,52 +10,103 @@
 
 {% block content %}
     <section class="wrapper flex-grow-1">
-        <div class="parent py-5">
+        <div class="parent">
             <div class="div1 card shadow-sm">
-                <h2>{{ _("Исходные данные") }}</h2>
+                <h3>{{ _("Исходные данные") }}</h3>
                 <form action="" method="post" autocomplete="off" id="submit-form">
                     {% csrf_token %}
-                    {{ html_form }}
+                    {{ html_forms.material_selector_form }}
+                    <details style="padding-top: 6px">
+                        <summary>{{ _('Химический состав') }}</summary>
+                        <div class="material-chemistry">
+                            <table class="table table-sm table-elements">
+                                <tr>
+                                    <th>C</th>
+                                    <th>Mn</th>
+                                    <th>Si</th>
+                                    <th>Cr</th>
+                                    <th>Ni</th>
+                                </tr>
+                                <tr>
+                                    <td id="element-C">0</td>
+                                    <td id="element-Mn">0</td>
+                                    <td id="element-Si">0</td>
+                                    <td id="element-Cr">0</td>
+                                    <td id="element-Ni">0</td>
+
+                                </tr>
+                                <tr>
+                                    <th>Cu</th>
+                                    <th>Al</th>
+                                    <th>N</th>
+                                    <th>S</th>
+                                    <th>P</th>
+                                </tr>
+                                <tr>
+                                    <td id="element-Cu">0</td>
+                                    <td id="element-Al">0</td>
+                                    <td id="element-N">0</td>
+                                    <td id="element-S">0</td>
+                                    <td id="element-P">0</td>
+                                </tr>
+                                <tr>
+                                    <th>Ti</th>
+                                    <th>Nb</th>
+                                    <th>Mo</th>
+                                    <th>V</th>
+                                    <th>W</th>
+                                </tr>
+                                <tr>
+                                    <td id="element-Ti">0</td>
+                                    <td id="element-Nb">0</td>
+                                    <td id="element-Mo">0</td>
+                                    <td id="element-V">0</td>
+                                    <td id="element-W">0</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </details>
+                    {{ html_forms.base_form }}
                     <div class="form--zones_table input-group input-group-sm mb-3">
-                        <table id="table-zones" class="table-zones">
+                        <table id="table-zones-time" class="table-zones">
                             <thead>
                             <tr>
                                 <th class="td-zone">№</th>
-                                <th class="td-zone">{{ html_form_zones.zone_time_1.label }}</th>
-                                <th class="td-zone">{{ html_form_zones.temp_air_1.label }}</th>
-                                <th class="td-zone">{{ html_form_zones.temp_bottom_1.label }}</th>
+                                <th class="td-zone">{{ html_forms.base_zones_form.zone_time_1.label }}</th>
+                                <th class="td-zone">{{ html_forms.base_zones_form.zone_temp_air_1.label }}</th>
+                                <th class="td-zone">{{ html_forms.base_zones_form.zone_temp_bottom_1.label }}</th>
                             </tr>
                             </thead>
-                            <tr>
-                                <td class="td-zone_1">1</td>
-                                <td class="td-zone_1">
-                                    {{ html_form_zones.zone_time_1 }}
+                            <tr class="td-zone_1">
+                                <td id="zone-time">1</td>
+                                <td>
+                                    {{ html_forms.base_zones_form.zone_time_1 }}
                                 </td>
-                                <td class="td-zone_1">
-                                    {{ html_form_zones.temp_air_1 }}
+                                <td>
+                                    {{ html_forms.base_zones_form.zone_temp_air_1 }}
                                 </td>
-                                <td class="td-zone_1">
-                                    {{ html_form_zones.thermal_coef_1_bottom }}
+                                <td>
+                                    {{ html_forms.base_zones_form.zone_temp_bottom_1 }}
                                 </td>
                             </tr>
                         </table>
                     </div>
                     <div class="form--zones_table input-group input-group-sm mb-3">
-                        <table id="table-zones" class="table-zones">
+                        <table id="table-zones-coef" class="table-zones">
                             <thead>
                             <tr>
                                 <th class="td-zone">№</th>
-                                <th class="td-zone">{{ html_form_zones.thermal_coef_1.label }}</th>
-                                <th class="td-zone">{{ html_form_zones.thermal_coef_1_bottom.label }}</th>
+                                <th class="td-zone">{{ html_forms.base_zones_form.zone_thermal_coef_1.label }}</th>
+                                <th class="td-zone">{{ html_forms.base_zones_form.zone_thermal_coef_1_bottom.label }}</th>
                             </tr>
                             </thead>
-                            <tr>
-                                <td class="td-zone_1">1</td>
-                                <td class="td-zone_1">
-                                    {{ html_form_zones.thermal_coef_1 }}
+                            <tr class="td-zone_1">
+                                <td id="zone-coef">1</td>
+                                <td>
+                                    {{ html_forms.base_zones_form.zone_thermal_coef_1 }}
                                 </td>
-                                <td class="td-zone_1">
-                                    {{ html_form_zones.thermal_coef_1_bottom }}
+                                <td>
+                                    {{ html_forms.base_zones_form.zone_thermal_coef_1_bottom }}
                                 </td>
                             </tr>
                         </table>
@@ -63,10 +114,7 @@
 
                     <details>
                         <summary>{{ _('Продвинутые настройки') }}</summary>
-                        <div class="form--thickness_layers">
-                        </div>
-                        <div class="form--time_step">
-                        </div>
+                        {{ html_forms.advanced_form }}
                     </details>
                     <button class="btn btn-calc btn-primary" type="submit" value="calc" name="calc"
                             id="submit">{{ _("Расчет") }}
@@ -76,7 +124,7 @@
             <div class="div-results card shadow-sm">
                 <div class="div2">
 
-                    <h2>{{ _("Результаты расчета") }}</h2>
+                    <h3>{{ _("Результаты расчета") }}</h3>
                     {% if plot %}
                         <div class="chart" id="plotty">
                             <script>
@@ -113,5 +161,5 @@
         {#    <script type="text/javascript" src="{{ url_for('static', filename='chemistry.js') }}"></script>#}
 
     </section>
-
+<script src="{% static 'js/thermal_zones.js' %}"></script>
 {% endblock %}

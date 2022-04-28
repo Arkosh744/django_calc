@@ -3,13 +3,17 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from .forms.forming import FormingForm
-from .forms.thermal import ThermalForm, ThermalZonesForm
+from .forms.thermal import ThermalForm, ThermalZonesForm, MaterialSelectorForm, AdvancedThermalForm
 
 
 def thermal(request):
-    html_form = ThermalForm()
-    html_form_zones = ThermalZonesForm()
-    return render(request, 'calc/thermal.html', context={'html_form': html_form, 'html_form_zones': html_form_zones})
+
+    html_forms = {'material_selector_form': MaterialSelectorForm(),
+                  'base_form': ThermalForm(),
+                  'base_zones_form': ThermalZonesForm(),
+                  'advanced_form': AdvancedThermalForm()}
+
+    return render(request, 'calc/thermal.html', context={'html_forms': html_forms})
 
 
 def barrel(request):
