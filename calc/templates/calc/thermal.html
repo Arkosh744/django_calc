@@ -66,100 +66,106 @@
                             </table>
                         </div>
                     </details>
-                    {{ html_forms.base_form }}
-                    <div class="form--zones_table input-group input-group-sm mb-3">
-                        <table id="table-zones-time" class="table-zones">
-                            <thead>
-                            <tr>
-                                <th class="td-zone">№</th>
-                                <th class="td-zone">{{ html_forms.base_zones_form.zone_time_1.label }}</th>
-                                <th class="td-zone">{{ html_forms.base_zones_form.zone_temp_air_1.label }}</th>
-                                <th class="td-zone">{{ html_forms.base_zones_form.zone_temp_bottom_1.label }}</th>
-                            </tr>
-                            </thead>
-                            <tr class="td-zone_1">
-                                <td id="zone-time">1</td>
-                                <td>
-                                    {{ html_forms.base_zones_form.zone_time_1 }}
-                                </td>
-                                <td>
-                                    {{ html_forms.base_zones_form.zone_temp_air_1 }}
-                                </td>
-                                <td>
-                                    {{ html_forms.base_zones_form.zone_temp_bottom_1 }}
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="form--zones_table input-group input-group-sm mb-3">
-                        <table id="table-zones-coef" class="table-zones">
-                            <thead>
-                            <tr>
-                                <th class="td-zone">№</th>
-                                <th class="td-zone">{{ html_forms.base_zones_form.zone_thermal_coef_1.label }}</th>
-                                <th class="td-zone">{{ html_forms.base_zones_form.zone_thermal_coef_1_bottom.label }}</th>
-                            </tr>
-                            </thead>
-                            <tr class="td-zone_1">
-                                <td id="zone-coef">1</td>
-                                <td>
-                                    {{ html_forms.base_zones_form.zone_thermal_coef_1 }}
-                                </td>
-                                <td>
-                                    {{ html_forms.base_zones_form.zone_thermal_coef_1_bottom }}
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <details>
-                        <summary>{{ _('Продвинутые настройки') }}</summary>
-                        {{ html_forms.advanced_form }}
-                    </details>
-                    <button class="btn btn-calc btn-primary" type="submit" value="calc" name="calc"
-                            id="submit">{{ _("Расчет") }}
-                    </button>
-                </form>
-            </div>
-            <div class="div-results card shadow-sm">
-                <div class="div2">
-
-                    <h3>{{ _("Результаты расчета") }}</h3>
-                    {% if plot %}
-                        <div class="chart" id="plotty">
-                            <script>
-                                var graphs = {{plot | safe}};
-                                graphs.config = {
-                                    displayModeBar: true,
-                                    displaylogo: false,
-                                    modeBarButtonsToRemove: ['toImage', 'pan2d', 'zoom2d', 'select2d',
-                                        'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d'],
-                                    showLink: true,
-                                    plotlyServerURL: "https://chart-studio.plotly.com",
-                                    linkText: '{{ _('Edit Online') }}',
-                                    modeBarButtonsToAdd: ['drawline']
-                                }
-                                Plotly.plot('plotty', graphs, {});
-                            </script>
+                    {% for input in html_forms.base_form %}
+                        <div class="form-{{ input.name }}">
+                        {{ input.label_tag }}
+                        {{ input.name.errors }}
+                        {{ input }}
                         </div>
-                    {% endif %}
+                    {% endfor %}
+            <div class="form--zones_table input-group input-group-sm mb-3">
+                <table id="table-zones-time" class="table-zones">
+                    <thead>
+                    <tr>
+                        <th class="td-zone">№</th>
+                        <th class="td-zone">{{ html_forms.base_zones_form.zone_time_1.label }}</th>
+                        <th class="td-zone">{{ html_forms.base_zones_form.zone_temp_air_1.label }}</th>
+                        <th class="td-zone">{{ html_forms.base_zones_form.zone_temp_bottom_1.label }}</th>
+                    </tr>
+                    </thead>
+                    <tr class="td-zone_1">
+                        <td id="zone-time">1</td>
+                        <td>
+                            {{ html_forms.base_zones_form.zone_time_1 }}
+                        </td>
+                        <td>
+                            {{ html_forms.base_zones_form.zone_temp_air_1 }}
+                        </td>
+                        <td>
+                            {{ html_forms.base_zones_form.zone_temp_bottom_1 }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="form--zones_table input-group input-group-sm mb-3">
+                <table id="table-zones-coef" class="table-zones">
+                    <thead>
+                    <tr>
+                        <th class="td-zone">№</th>
+                        <th class="td-zone">{{ html_forms.base_zones_form.zone_thermal_coef_1.label }}</th>
+                        <th class="td-zone">{{ html_forms.base_zones_form.zone_thermal_coef_1_bottom.label }}</th>
+                    </tr>
+                    </thead>
+                    <tr class="td-zone_1">
+                        <td id="zone-coef">1</td>
+                        <td>
+                            {{ html_forms.base_zones_form.zone_thermal_coef_1 }}
+                        </td>
+                        <td>
+                            {{ html_forms.base_zones_form.zone_thermal_coef_1_bottom }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
 
-                </div>
-                <div class="div3">
-                    {% if table %}
-                        <h1 align="center" id="table-result">{{ _("Таблица для экспорта") }}</h1>
-                        {{ table }}
-                        <div>
-                            <a download="results.xlsx" class="btn btn-outline-success"
-                               onclick="return ExcellentExport.convert({ anchor: this, filename: 'results', format: 'xlsx'},
+            <details>
+                <summary>{{ _('Продвинутые настройки') }}</summary>
+                {{ html_forms.advanced_form }}
+            </details>
+            <button class="btn btn-calc btn-primary" type="submit" value="calc" name="calc"
+                    id="submit">{{ _("Расчет") }}
+            </button>
+            </form>
+        </div>
+        <div class="div-results card shadow-sm">
+            <div class="div2">
+
+                <h3>{{ _("Результаты расчета") }}</h3>
+                {% if plot %}
+                    <div class="chart" id="plotty">
+                        <script>
+                            var graphs = {{plot | safe}};
+                            graphs.config = {
+                                displayModeBar: true,
+                                displaylogo: false,
+                                modeBarButtonsToRemove: ['toImage', 'pan2d', 'zoom2d', 'select2d',
+                                    'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d'],
+                                showLink: true,
+                                plotlyServerURL: "https://chart-studio.plotly.com",
+                                linkText: '{{ _('Edit Online') }}',
+                                modeBarButtonsToAdd: ['drawline']
+                            }
+                            Plotly.plot('plotty', graphs, {});
+                        </script>
+                    </div>
+                {% endif %}
+
+            </div>
+            <div class="div3">
+                {% if table %}
+                    <h1 align="center" id="table-result">{{ _("Таблица для экспорта") }}</h1>
+                    {{ table }}
+                    <div>
+                        <a download="results.xlsx" class="btn btn-outline-success"
+                           onclick="return ExcellentExport.convert({ anchor: this, filename: 'results', format: 'xlsx'},
                        [{name: 'Results', from: {table: 'resultData'}}]);">Export to xlsx</a>
-                        </div>
-                    {% endif %}
-                </div>
+                    </div>
+                {% endif %}
             </div>
+        </div>
         </div>
         {#    <script type="text/javascript" src="{{ url_for('static', filename='chemistry.js') }}"></script>#}
 
     </section>
-<script src="{% static 'js/thermal_zones.js' %}"></script>
+    <script src="{% static 'js/thermal_zones.js' %}"></script>
 {% endblock %}

@@ -36,3 +36,7 @@ body {
     flex: 10 1 auto;
     margin: 0 10px;
 }
+
+.card {
+    border: 1px solid rgba(0,0,0,.125);
+}

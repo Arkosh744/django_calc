@@ -1,12 +1,11 @@
 let zones_select = document.getElementById("id_number_of_zones");
+let thickness_input ='<input type="text" name="thickness" value="30" class="form-control form-control-sm" ' +
+    'required="" id="id_thickness">'
+
 
 function clear(tr1, tr2) {
     $('#table-zones-time tbody').empty().append(tr1)
     $('#table-zones-coef tbody').empty().append(tr2)
-}
-
-function check_len() {
-    return $('#table-zones-time tbody').children().length
 }
 
 zones_select.onchange = function () {
@@ -47,3 +46,13 @@ zones_select.onchange = function () {
         }
     }
 }
+
+$('#id_geometry input:radio').click(function () {
+    if ($(this).val() === '1') {
+        document.getElementsByClassName('form-thickness')[0].innerHTML =
+            '<label for="id_thickness">Толщина, мм:</label>' + thickness_input
+    } else {
+        document.getElementsByClassName('form-thickness')[0].innerHTML =
+            '<label for="id_thickness">Радиус, мм:</label>' + thickness_input
+    }
+});
