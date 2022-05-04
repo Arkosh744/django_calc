@@ -22,14 +22,14 @@ class MaterialSelectorForm(forms.Form):
 
 class ThermalForm(forms.Form):
     geometry = forms.ChoiceField(choices=geometry_state, label='Форма',
-                                 widget=forms.RadioSelect(), initial='1', )
+                                 widget=forms.RadioSelect(), initial=1, )
 
     thickness = forms.FloatField(label='Толщина, мм', min_value=0, initial=30,
                                  widget=forms.TextInput(attrs={'class': "form-control form-control-sm"}))
     temp_initial = forms.IntegerField(label='Начальная температура, °C', min_value=-73,
                                       initial=30,
                                       widget=forms.TextInput(attrs={'class': "form-control form-control-sm"}))
-    number_of_zones = forms.ChoiceField(label='Количество зон', choices=zones_state, initial=1,
+    number_of_zones = forms.ChoiceField(label='Количество зон', choices=zones_state, initial=0,
                                         widget=forms.Select(attrs={'class': 'form-select form-select-sm'}))
 
 

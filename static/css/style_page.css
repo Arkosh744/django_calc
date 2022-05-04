@@ -1,5 +1,9 @@
+html {
+  font-size: 0.855rem;
+}
 body {
     margin: 0 auto;
+    font-size: 0.9rem;
 }
 
 .div1 h3, .div2 h3 {

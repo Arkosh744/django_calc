@@ -1,3 +1,6 @@
+from dataclasses import dataclass
+from typing import List
+
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 
@@ -19,7 +22,6 @@ class TubeForming(models.Model):
 
     def __str__(self):
         return f'{self.name}, {self.thickness} мм'
-
 
 class ChemistryThermal(models.Model):
     name = models.CharField(max_length=100, null=False, unique=True)
@@ -53,3 +55,18 @@ class ThermalProps(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+
+
+@dataclass
+class PreparedData:
+    thickness: str
+    point_layers: List[int]
+    temp_ini: float
+    material_data: ThermalProps
+    form: int
+    time_in_zones: List[float]
+    time_step: float
+    k2: List[float]
+    temp_e2: List[float]
+    k1: List[float] = 0
+    temp_e1: List[float] = 0

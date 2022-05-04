@@ -42,7 +42,7 @@ table {
     text-align: center;
     margin: 5px auto;
     width: 100%;
-    font-size: 11px;
+    font-size: 0.75rem;
 }
 
 .table-zones td input {
