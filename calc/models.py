@@ -59,10 +59,9 @@ class ThermalProps(models.Model):
 
 @dataclass
 class PreparedData:
-    thickness: str
-    point_layers: List[int]
+    thickness: float
+    point_layers: int
     temp_ini: float
-    material_data: ThermalProps
     form: int
     time_in_zones: List[float]
     time_step: float
@@ -70,3 +69,4 @@ class PreparedData:
     temp_e2: List[float]
     k1: List[float] = 0
     temp_e1: List[float] = 0
+    material_data: "ThermalProps" = None

@@ -22,18 +22,9 @@ class ThermalView(View):
 
     def post(self, request):
         print(request.POST)
-        cooling_form = True
-        try:
-            material = ThermalProps.objects.filter(id=request.POST.get('material_select'), cooling=cooling_form)[0]
-        except IndexError:
-            print('IndexError')
-            material = ThermalProps.objects.filter(id=request.POST.get('material_select'))[0]
-        print(material)
-        print(type(material))
         prepared_data = PreparedData(thickness=float(request.POST.get('thickness')[0]),
                                      point_layers=int(request.POST.get('thickness_layers')[0]),
                                      temp_ini=float(request.POST.get('temp_initial')[0]),
-                                     metaterial_data=material,
                                      form=int(request.POST.get('geometry')[0]),
                                      time_in_zones=request.POST.get('zone_time'),
                                      time_step=request.POST.get('time_step'),
@@ -42,6 +33,16 @@ class ThermalView(View):
         if int(request.POST.get('geometry')[0]) == 1:
             prepared_data.k1 = request.POST.get('zone_thermal_coef_bottom')
             prepared_data.temp_e1 = request.POST.get('zone_thermal_coef_bottom')
+
+        cooling_form = True
+        try:
+            material = ThermalProps.objects.filter(id=request.POST.get('material_select'), cooling=cooling_form)[0]
+        except IndexError:
+            print('IndexError')
+            material = ThermalProps.objects.filter(id=request.POST.get('material_select'))[0]
+        prepared_data.material_data = material
+
+        print(prepared_data)
         initial_data = {'material': material.id,}
         # calc_results(material, request.POST)
         return render(request, 'calc/thermal.html', context={'html_forms': self.html_forms})
