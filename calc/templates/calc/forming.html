@@ -13,7 +13,7 @@
     <div class="parent py-5" id="content">
         <div class="div1 card shadow-sm">
             <h1>{{ _("Исходные данные") }}</h1>
-            <form action="" method="post" autocomplete="off" id="submit-form">
+            <form method="post" autocomplete="off" id="submit-form">
                 {% csrf_token %}
                 {{ html_form }}
 
