@@ -5,15 +5,14 @@ let initial = $('tr.td-zone_1')
 let t1 = initial[0]
 let t2 = initial[1]
 let temp_bottom = $('#table-zones-time thead tr th:nth-child(4)')
-let temp_bottom_clone = temp_bottom[0].cloneNode(true)
 let temp_bottom_input = $('#table-zones-time tbody tr td:nth-child(4)')
+let temp_bottom_clone = temp_bottom[0].cloneNode(true)
 let temp_bottom_input_clone = temp_bottom_input[0].cloneNode(true)
 
 let coef_bottom = $('#table-zones-coef thead tr th:nth-child(3)')
-let coef_bottom_clone = temp_bottom[0].cloneNode(true)
 let coef_bottom_input = $('#table-zones-coef tbody tr td:nth-child(3)')
-let coef_bottom_input_clone = temp_bottom_input[0].cloneNode(true)
-console.log(coef_bottom_input)
+let coef_bottom_clone = coef_bottom[0].cloneNode(true)
+let coef_bottom_input_clone = coef_bottom_input[0].cloneNode(true)
 
 function clear(tr1, tr2) {
     $('#table-zones-time tbody').empty().append(tr1)
@@ -61,18 +60,28 @@ $('#id_geometry input:radio').click(function () {
         document.getElementsByClassName('form-thickness')[0].innerHTML =
             '<label for="id_thickness">Толщина, мм:</label>' + thickness_input
 
-        if ($('#table-zones-time')[0].children[0].children[0].children.length < 4) {
-            $('#table-zones-time thead tr').append(temp_bottom)
-            $('#table-zones-time tbody tr').append(temp_bottom_input)
+        if ($('#table-zones-time thead tr')[0].children.length < 4) {
+            $('#table-zones-time thead tr').append(temp_bottom_clone)
+            $('#table-zones-time tbody tr').append(temp_bottom_input_clone)
+        }
+
+        if ($('#table-zones-coef thead tr')[0].children.length < 3) {
+            $('#table-zones-coef thead tr').append(coef_bottom_clone)
+            $('#table-zones-coef tbody tr').append(coef_bottom_input_clone)
         }
 
     } else {
         document.getElementsByClassName('form-thickness')[0].innerHTML =
             '<label for="id_thickness">Радиус, мм:</label>' + thickness_input
 
-        if ($('#table-zones-time')[0].children[0].children[0].children.length > 3) {
-            $('#id_zone_temp_bottom').parent().remove()
-            $('#table-zones-time')[0].children[0].children[0].children[3].remove()
+        if ($('#table-zones-time thead tr')[0].children.length >= 4) {
+            $('#table-zones-time thead tr th:nth-child(4)').remove();
+            $('#table-zones-time tbody tr td:nth-child(4)').remove()
+        }
+
+        if ($('#table-zones-coef thead tr')[0].children.length >= 3) {
+            $('#table-zones-coef thead tr th:nth-child(3)').remove()
+            $('#table-zones-coef tbody tr td:nth-child(3)').remove()
         }
 
         // console.log(t1.children[3].innerHTML)
