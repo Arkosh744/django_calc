@@ -1,9 +1,5 @@
-html {
-  font-size: 0.855rem;
-}
 body {
     margin: 0 auto;
-    font-size: 0.9rem;
 }
 
 .div1 h3, .div2 h3 {
@@ -13,7 +9,7 @@ body {
     width: 80%;
     text-align: center;
     margin: 0 auto;
-    padding: 10px;
+    padding: 0.5rem;
 }
 
 .parent {
@@ -22,14 +18,16 @@ body {
     justify-content: space-around;
     align-content: flex-start;
     align-items: flex-start;
-    margin: 12px 25px;
+    margin: 0.5rem 1.5rem;
 }
 
-.div1 {
-    padding: 12px;
-    max-width: 340px;
+div .div1 {
+    border: 0.05rem solid rgba(0,0,0,.125);
+    padding: 0.7rem;
+    max-width: 20rem;
+    min-width: 19rem;
     flex: 1 1 auto;
-    margin-bottom: 12px;
+    margin-bottom: 0.7rem;
 }
 
 .div-results {
@@ -38,9 +36,5 @@ body {
     justify-content: space-around;
     align-content: flex-start;
     flex: 10 1 auto;
-    margin: 0 10px;
-}
-
-.card {
-    border: 1px solid rgba(0,0,0,.125);
+    margin: 0 0.5rem;
 }

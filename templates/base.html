@@ -21,7 +21,7 @@
 
 <body class="d-flex flex-column min-vh-100" style="background-position: 0 -60px;">
 <nav class="navbar navbar-light navbar-expand-md fixed-top navbar-shrink py-3" id="mainNav">
-    <div class="container">
+    <div class="container" style="max-width: 1740px;">
         <a class="navbar-brand d-flex align-items-center" href="/"><span style="text-align: center;"><img
                 src="{% static 'img/Severstal_Unity_Blue_RGB.png' %}"
                 style="width: 27px;height: 27px;margin-right: 8px;margin-bottom: 6px;">Калькуляторы</span></a>
@@ -50,7 +50,7 @@
 {% block content %} {% endblock %}
 
 <footer class="bg-primary-gradient" style="font-size: 75%">
-    <div class="container py-4">
+    <div class="container py-4" style="max-width: 1800px;">
         <div class="row justify-content-center">
             <div class="col-lg-3 col-md-12 col-lg-9 offset-md-0 offset-lg-0 text-center text-lg-start d-flex flex-column item">
                 <ul class="list-unstyled"></ul>
@@ -67,7 +67,7 @@
                 </div>
             </div>
             <div class="col-lg-3 text-center text-lg-start d-flex flex-column align-items-center order-first align-items-lg-start order-lg-last item social">
-                <img src="../static/img/severstal-logo-blue.svg" style="text-align: left;">
+                <img src="../static/img/severstal-logo-blue.svg" style="margin-left: auto; display: block;">
                 <p class="text-muted copyright"></p>
             </div>
         </div>
