@@ -22,29 +22,34 @@ class ThermalView(View):
 
     def post(self, request):
         print(request.POST)
-        prepared_data = PreparedData(thickness=float(request.POST.get('thickness')[0]),
-                                     point_layers=int(request.POST.get('thickness_layers')[0]),
-                                     temp_ini=float(request.POST.get('temp_initial')[0]),
-                                     form=int(request.POST.get('geometry')[0]),
-                                     time_in_zones=request.POST.get('zone_time'),
-                                     time_step=request.POST.get('time_step'),
-                                     k2=request.POST.get('zone_thermal_coef'),
-                                     temp_e2=request.POST.get('zone_temp_air'))
-        if int(request.POST.get('geometry')[0]) == 1:
-            prepared_data.k1 = request.POST.get('zone_thermal_coef_bottom')
-            prepared_data.temp_e1 = request.POST.get('zone_thermal_coef_bottom')
+        prepared_data = PreparedData(thickness=float(request.POST.get('thickness')),
+                                     point_layers=int(request.POST.get('thickness_layers')),
+                                     temp_ini=float(request.POST.get('temp_initial')),
+                                     form=int(request.POST.get('geometry')),
+                                     time_in_zones=[float(i) for i in request.POST.getlist('zone_time')],
+                                     time_step=float(request.POST.get('time_step')),
+                                     k2=[float(i) for i in request.POST.getlist('zone_thermal_coef')],
+                                     temp_e2=[float(i) for i in request.POST.getlist('zone_temp_air')])
+        prepared_data.k1 = [float(i) for i in request.POST.getlist('zone_thermal_coef_bottom')] if \
+            request.POST.get('geometry')[0] == '1' else [0]
+        prepared_data.temp_e1 = [float(i) for i in request.POST.getlist('zone_thermal_coef_bottom')] if \
+            request.POST.get('geometry')[0] == '1' else [0]
 
-        cooling_form = True
+        cooling_form = True if prepared_data.temp_ini >= prepared_data.temp_e2[0] else False
+
         try:
             material = ThermalProps.objects.filter(id=request.POST.get('material_select'), cooling=cooling_form)[0]
         except IndexError:
-            print('IndexError')
             material = ThermalProps.objects.filter(id=request.POST.get('material_select'))[0]
+
         prepared_data.material_data = material
 
-        print(prepared_data)
-        initial_data = {'material': material.id,}
-        # calc_results(material, request.POST)
+        calculated_results = calc_results(prepared_data)
+        # temp, res = iteration(tau, current_zone_time, temp, prepared_data.material_data,
+        #                       prepared_data.form, h, r_pos, r_posn, r_posp,
+        #                       prepared_data.k2[current_zone], prepared_data.temp_e2[current_zone],
+        #                       prepared_data.k1[0], prepared_data.temp_e1[0], prepared_data.point_layers)
+
         return render(request, 'calc/thermal.html', context={'html_forms': self.html_forms})
 
 

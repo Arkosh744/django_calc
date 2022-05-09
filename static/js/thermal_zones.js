@@ -83,7 +83,5 @@ $('#id_geometry input:radio').click(function () {
             $('#table-zones-coef thead tr th:nth-child(3)').remove()
             $('#table-zones-coef tbody tr td:nth-child(3)').remove()
         }
-
-        // console.log(t1.children[3].innerHTML)
     }
 });
