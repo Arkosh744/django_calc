@@ -21,7 +21,6 @@ class ThermalView(View):
         return render(request, 'calc/thermal.html', context={'html_forms': self.html_forms})
 
     def post(self, request):
-        print(request.POST)
         prepared_data = PreparedData(thickness=float(request.POST.get('thickness')),
                                      point_layers=int(request.POST.get('thickness_layers')),
                                      temp_ini=float(request.POST.get('temp_initial')),

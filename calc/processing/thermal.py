@@ -87,15 +87,14 @@ def iteration(tau, current_zone_time, temp, prepared_data, h, r_pos, r_posn, r_p
 
             # Форма тела - 1-пластина, 2 цилиндр, 3- шар
             form = prepared_data.form
-            k2 = prepared_data.k1[current_zone]
-            temp_e2 = prepared_data.temp_e1[current_zone]
+            print(current_zone)
+            k2 = prepared_data.k2[current_zone]
+            temp_e2 = prepared_data.temp_e2[current_zone]
             if form > 1:
-                k1 = prepared_data.k1[0]
-                temp_e1 = prepared_data.temp_e1[0]
-
                 alpha[0] = (tau / denssph[0] * (1 + form) * (conduct[0] + conduct[1])) / (
                         h ** 2 + tau / denssph[0] * (1 + form) * (conduct[0] + conduct[1]))
                 beta[0] = (h ** 2 * temp_pred[0]) / (h ** 2 + tau / denssph[0] * (1 + form) * (conduct[0] + conduct[1]))
+
             else:  # граничные условия для пластины
                 k1 = prepared_data.k1[current_zone]
                 temp_e1 = prepared_data.temp_e1[current_zone]
