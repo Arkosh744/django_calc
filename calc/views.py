@@ -1,14 +1,11 @@
 # Create your views here.
-from django.http import HttpResponse
 from django.shortcuts import render
-from django.urls import reverse
+from django.views import View
+
 from .forms.forming import FormingForm
 from .forms.thermal import ThermalForm, ThermalZonesForm, MaterialSelectorForm, AdvancedThermalForm
-from django.views.generic import TemplateView
-from django.http import HttpResponse
-from django.views import View
+from .models import ThermalProps, PreparedData, ChemistryThermal
 from .processing.thermal import main as calc_results
-from .models import ThermalProps, PreparedData
 
 
 class ThermalView(View):
@@ -21,33 +18,31 @@ class ThermalView(View):
         return render(request, 'calc/thermal.html', context={'html_forms': self.html_forms})
 
     def post(self, request):
+        print(request.POST)
         prepared_data = PreparedData(thickness=float(request.POST.get('thickness')),
                                      point_layers=int(request.POST.get('thickness_layers')),
                                      temp_ini=float(request.POST.get('temp_initial')),
-                                     form=int(request.POST.get('geometry')),
+                                     form=int(request.POST.get('geometry')) - 1,
                                      time_in_zones=[float(i) for i in request.POST.getlist('zone_time')],
                                      time_step=float(request.POST.get('time_step')),
                                      k2=[float(i) for i in request.POST.getlist('zone_thermal_coef')],
                                      temp_e2=[float(i) for i in request.POST.getlist('zone_temp_air')])
         prepared_data.k1 = [float(i) for i in request.POST.getlist('zone_thermal_coef_bottom')] if \
             request.POST.get('geometry')[0] == '1' else [0]
-        prepared_data.temp_e1 = [float(i) for i in request.POST.getlist('zone_thermal_coef_bottom')] if \
+        prepared_data.temp_e1 = [float(i) for i in request.POST.getlist('zone_temp_bottom')] if \
             request.POST.get('geometry')[0] == '1' else [0]
 
         cooling_form = True if prepared_data.temp_ini >= prepared_data.temp_e2[0] else False
-
+        get_mat_name = ChemistryThermal.objects.filter(id=request.POST.get('material_select'))[0].name
         try:
-            material = ThermalProps.objects.filter(id=request.POST.get('material_select'), cooling=cooling_form)[0]
+            material = ThermalProps.objects.filter(name=get_mat_name, cooling=cooling_form)[0]
         except IndexError:
-            material = ThermalProps.objects.filter(id=request.POST.get('material_select'))[0]
+            material = ThermalProps.objects.filter(get_mat_name)[0]
 
         prepared_data.material_data = material
 
         calculated_results = calc_results(prepared_data)
-        # temp, res = iteration(tau, current_zone_time, temp, prepared_data.material_data,
-        #                       prepared_data.form, h, r_pos, r_posn, r_posp,
-        #                       prepared_data.k2[current_zone], prepared_data.temp_e2[current_zone],
-        #                       prepared_data.k1[0], prepared_data.temp_e1[0], prepared_data.point_layers)
+        print(calculated_results)
 
         return render(request, 'calc/thermal.html', context={'html_forms': self.html_forms})
 
