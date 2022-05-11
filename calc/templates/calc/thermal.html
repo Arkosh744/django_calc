@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filter %}
 
 
 {% block header %}
@@ -151,15 +152,31 @@
 
                 </div>
                 <div class="div3">
-                    {% if table %}
-                        <h1 align="center" id="table-result">{{ _("Таблица для экспорта") }}</h1>
-                        {{ table }}
-                        <div>
-                            <a download="results.xlsx" class="btn btn-outline-success"
-                               onclick="return ExcellentExport.convert({ anchor: this, filename: 'results', format: 'xlsx'},
+                    <h1 align="center" id="table-result">{{ _("Таблица для экспорта") }}</h1>
+                    <table border="1">
+
+                        <th>Координата толщины, мм</th>
+                        {% for column in number_of_zones %}
+                            <th>Зона {{ column }}, °C</th>
+                        {% endfor %}
+
+
+                        {% for row in table_data %}
+                            <tr>
+                                {% for value in row %}
+                                        <td>
+                                            {{ value }}
+                                        </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+
+                    </table>
+                    <div>
+                        <a download="results.xlsx" class="btn btn-outline-success"
+                           onclick="return ExcellentExport.convert({ anchor: this, filename: 'results', format: 'xlsx'},
                        [{name: 'Results', from: {table: 'resultData'}}]);">Export to xlsx</a>
-                        </div>
-                    {% endif %}
+                    </div>
                 </div>
             </div>
         </div>

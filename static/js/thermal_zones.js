@@ -30,9 +30,9 @@ zones_select.onchange = function zone_select_change() {
             t_time.classList = 'td-zone_' + (current_row + 1)
             t_time.children[0].innerHTML = current_row + 1
             t_time.children[1].children[0].id = 'id_zone_time_' + (current_row + 1)
-            t_time.children[1].children[0].value = 1
+            t_time.children[1].children[0].value = 10
             t_time.children[2].children[0].id = 'id_zone_temp_air_' + (current_row + 1)
-            t_time.children[2].children[0].value = 600
+            t_time.children[2].children[0].value = 150
             if (t_time.length > 3) {
                 t_time.children[3].children[0].id = 'id_zone_temp_bottom_' + (current_row + 1)
                 t_time.children[3].children[0].value = 30
@@ -41,10 +41,10 @@ zones_select.onchange = function zone_select_change() {
             t_coef.classList = 'td-zone_' + (current_row + 1)
             t_coef.children[0].innerHTML = current_row + 1
             t_coef.children[1].children[0].id = 'id_zone_coef_' + (current_row + 1)
-            t_coef.children[1].children[0].value = 150
+            t_coef.children[1].children[0].value = 1500
             if (t_coef.length > 2) {
                 t_coef.children[2].children[0].id = 'id_zone_coef_' + (current_row + 1)
-                t_coef.children[2].children[0].value = 150
+                t_coef.children[2].children[0].value = 1500
             }
 
             $('#table-zones-time tbody').append(t_time)

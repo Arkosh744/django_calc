@@ -23,6 +23,7 @@ class TubeForming(models.Model):
     def __str__(self):
         return f'{self.name}, {self.thickness} мм'
 
+
 class ChemistryThermal(models.Model):
     name = models.CharField(max_length=100, null=False, unique=True)
     Al = models.FloatField(default=0, null=False)

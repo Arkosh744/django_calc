@@ -35,7 +35,7 @@ class ThermalForm(forms.Form):
 
 class ThermalZonesForm(forms.Form):
     zone_time = forms.FloatField(label='Время в зоне, сек', min_value=0,
-                                 initial=0.2, widget=forms.TextInput(attrs={'class': "form-control form-control-small"}))
+                                 initial=10, widget=forms.TextInput(attrs={'class': "form-control form-control-small"}))
     zone_temp_air = forms.FloatField(label='Температура окр. среды, °C', min_value=0,
                                      initial=150,
                                      widget=forms.TextInput(attrs={'class': "form-control form-control-small"}))

@@ -159,6 +159,6 @@ def main(prepared_data: PreparedData):
 
         temp, res = iteration(tau, current_zone_time, temp, prepared_data, h, r_pos, r_posn, r_posp, current_zone)
         # И это искомые результаты. их куда то выводить.
-        result_temp += [temp]
-        result_list += res
+        result_temp += [temp[:]]
+        result_list += res[:]
     return {'result_temp': result_temp, 'result_list': result_list, 'thickness_points': r_pos}

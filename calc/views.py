@@ -42,9 +42,22 @@ class ThermalView(View):
         prepared_data.material_data = material
 
         calculated_results = calc_results(prepared_data)
-        print(calculated_results)
+        print(calculated_results.get('result_temp'))
+        table_data = list()
+        for table_row in range(int(request.POST.get('thickness_layers'))):
+            table_data_row = list()
+            table_data_row += [calculated_results.get('thickness_points')[table_row] * 1000]
+            for temp_zone in range(int(request.POST.get('number_of_zones'))):
+                table_data_row += [round(calculated_results.get('result_temp')[temp_zone][table_row], 1)]
+            table_data += [table_data_row]
+            # table_data += [calculated_results.thickness_points[table_row]]
+        print(table_data)
 
-        return render(request, 'calc/thermal.html', context={'html_forms': self.html_forms})
+
+        return render(request, 'calc/thermal.html',
+                      context={'html_forms': self.html_forms,
+                               'number_of_zones': range(1, int(request.POST.get('number_of_zones'))+1),
+                               'table_data': table_data,})
 
 
 def barrel(request):
