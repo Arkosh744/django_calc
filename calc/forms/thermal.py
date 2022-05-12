@@ -57,3 +57,4 @@ class AdvancedThermalForm(forms.Form):
     time_step = forms.IntegerField(label='Шаг по времени, сек', min_value=0, max_value=5,
                                    initial=0.1,
                                    widget=forms.TextInput(attrs={'class': "form-control form-control-small"}))
+

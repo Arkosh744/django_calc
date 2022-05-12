@@ -33,13 +33,8 @@ details {
     margin-bottom: 15px;
 }
 
-.div1 {
-    padding: 12px;
-}
-
-.div2 {
-    padding: 5px;
-
+.div-results .div2 {
+    min-width: 500px;
 }
 
 .div3 {

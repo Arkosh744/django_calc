@@ -14,7 +14,7 @@ body {
 
 .parent {
     display: flex;
-    flex-flow: row wrap;
+    flex-flow: row nowrap;
     justify-content: space-around;
     align-content: flex-start;
     align-items: flex-start;
@@ -30,7 +30,7 @@ div .div1 {
     margin-bottom: 0.7rem;
 }
 
-.div-results {
+.parent .div-results {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;

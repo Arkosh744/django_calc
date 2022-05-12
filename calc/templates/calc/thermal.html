@@ -152,25 +152,22 @@
 
                 </div>
                 <div class="div3">
-                    <h1 align="center" id="table-result">{{ _("Таблица для экспорта") }}</h1>
-                    <table border="1">
-
-                        <th>Координата толщины, мм</th>
+                    <h3 id="table-result">{{ _("Таблица для экспорта") }}</h3>
+                    <table class="table table-sm" id="resultData">
+                        <thead>
+                        <th>{{ thickness_text }}</th>
                         {% for column in number_of_zones %}
                             <th>Зона {{ column }}, °C</th>
-                        {% endfor %}
-
-
+                        {% endfor %}</thead>
+                        <tbody>
                         {% for row in table_data %}
                             <tr>
                                 {% for value in row %}
-                                        <td>
-                                            {{ value }}
-                                        </td>
+                                    <td>{{ value }}</td>
                                 {% endfor %}
                             </tr>
                         {% endfor %}
-
+                        </tbody>
                     </table>
                     <div>
                         <a download="results.xlsx" class="btn btn-outline-success"
@@ -183,5 +180,6 @@
         {#    <script type="text/javascript" src="{{ url_for('static', filename='chemistry.js') }}"></script>#}
 
     </section>
-    <script src="{% static 'js/thermal_zones.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/thermal_zones.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/excellentexport.js' %}"></script>
 {% endblock %}
