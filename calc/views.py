@@ -9,7 +9,7 @@ from django.shortcuts import render
 from django.views import View
 
 from .forms.forming import FormingForm
-from .forms.thermal import ThermalForm, ThermalZones
+from .forms.thermal import ThermalForm, ThermalZones, ThermalZonesFormSet
 from .models import ThermalProps, PreparedData, ChemistryThermal
 from .processing.thermal import main as calc_results
 
@@ -19,7 +19,7 @@ class ThermalView(View):
     geometry_forms = {1: 'Пластина', 2: 'Цилиндр', 3: 'Шар'}
 
     def get(self, request):
-        ZonesFormset = formset_factory(ThermalZones, extra=1)
+        ZonesFormset = formset_factory(ThermalZones, extra=1, formset=ThermalZonesFormSet)
         formset = ZonesFormset()
         return render(request, 'calc/thermal.html',
                       context={'html_forms': self.html_forms, 'zones_formset': formset,
@@ -27,13 +27,12 @@ class ThermalView(View):
 
     def post(self, request):
         self.html_forms = ThermalForm(request.POST or None)
-        print(int(request.POST.get('number_of_zones')))
-        ZonesFormset = formset_factory(ThermalZones, extra=int(request.POST.get('number_of_zones')))
-        formset = ZonesFormset(request.POST or None)
-        print(self.html_forms.is_valid())
-        print(formset.errors)
-        print(formset.error_messages)
-        print(request.POST)
+        ZonesFormset = formset_factory(ThermalZones, extra=int(request.POST.get('number_of_zones')),
+                                       formset=ThermalZonesFormSet)
+        formset = ZonesFormset(request.POST or None, prefix='form')
+        print(formset.is_valid())
+        print(formset.cleaned_data)
+        # print(request.POST)
 
         prepared_data = PreparedData(thickness=float(request.POST.get('thickness')),
                                      point_layers=int(request.POST.get('thickness_layers')),

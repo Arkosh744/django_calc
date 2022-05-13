@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import BaseModelFormSet, BaseFormSet
 
 from calc.models import ChemistryThermal
 
@@ -24,16 +25,16 @@ class ThermalForm(forms.Form):
     thickness = forms.FloatField(label='Толщина, мм', min_value=0, initial=30,
                                  widget=forms.TextInput(attrs={'class': "form-control form-control-small"}))
     temp_initial = forms.FloatField(label='Начальная температура, °C', min_value=-73,
-                                      initial=30,
-                                      widget=forms.TextInput(attrs={'class': "form-control form-control-small"}))
+                                    initial=30,
+                                    widget=forms.TextInput(attrs={'class': "form-control form-control-small"}))
     number_of_zones = forms.ChoiceField(label='Количество зон', choices=zones_state, initial=1,
                                         widget=forms.Select(attrs={'class': 'form-select form-control-small'}))
 
     thickness_layers = forms.FloatField(label='Количество слоев по толщине', min_value=0, max_value=100, initial=20,
                                         widget=forms.TextInput(attrs={'class': "form-control form-control-small"}))
     time_step = forms.FloatField(label='Шаг по времени, сек', min_value=0, max_value=5,
-                                   initial=0.1,
-                                   widget=forms.TextInput(attrs={'class': "form-control form-control-small"}))
+                                 initial=0.1,
+                                 widget=forms.TextInput(attrs={'class': "form-control form-control-small"}))
 
 
 class ThermalZones(forms.Form):
@@ -51,3 +52,9 @@ class ThermalZones(forms.Form):
                                                 widget=forms.TextInput(
                                                     attrs={'class': "form-control form-control-small"}))
 
+
+class ThermalZonesFormSet(BaseFormSet):
+    def __init__(self, *args, **kwargs):
+        super(ThermalZonesFormSet, self).__init__(*args, **kwargs)
+        for form in self.forms:
+            form.empty_permitted = False
