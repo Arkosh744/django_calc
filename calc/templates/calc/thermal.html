@@ -14,9 +14,11 @@
         <div class="parent">
             <div class="div1 card shadow-sm">
                 <h3>{{ _("Исходные данные") }}</h3>
-                <form action="" method="post" autocomplete="off" id="submit-form">
+                <form action="{% url 'thermal' %}" method="post" autocomplete="off" id="submit-form">
                     {% csrf_token %}
-                    {{ html_forms.material_selector_form }}
+                    {{ zones_formset.management_form }}
+                    {{ html_forms.material_select.label }}
+                    {{ html_forms.material_select }}
                     <details style="padding-top: 6px">
                         <summary>{{ _('Химический состав') }}</summary>
                         <div class="material-chemistry">
@@ -67,61 +69,104 @@
                             </table>
                         </div>
                     </details>
-                    {% for input in html_forms.base_form %}
-                        <div class="form-{{ input.name }}">
-                            {{ input.label_tag }}
-                            {{ input.name.errors }}
-                            {{ input }}
-                        </div>
-                    {% endfor %}
+                    <div>
+                        {{ html_forms.geometry.label_tag }}
+                        {{ html_forms.geometry.name.errors }}
+                        {{ html_forms.geometry }}
+                    </div>
+                    <div class="form-thickness">
+                        {{ html_forms.thickness.label_tag }}
+                        {{ html_forms.thickness.name.errors }}
+                        {{ html_forms.thickness }}
+                    </div>
+                    <div>
+                        {{ html_forms.temp_initial.label_tag }}
+                        {{ html_forms.temp_initial.name.errors }}
+                        {{ html_forms.temp_initial }}
+                    </div>
+                    <div>
+                        {{ html_forms.number_of_zones.label_tag }}
+                        {{ html_forms.number_of_zones.name.errors }}
+                        {{ html_forms.number_of_zones }}
+                    </div>
                     <div class="form--zones_table input-group input-group-sm mb-3">
                         <table id="table-zones-time" class="table-zones">
-                            <thead>
-                            <tr>
-                                <th class="td-zone">№</th>
-                                <th class="td-zone">{{ html_forms.base_zones_form.zone_time.label }}</th>
-                                <th class="td-zone">{{ html_forms.base_zones_form.zone_temp_air.label }}</th>
-                                <th class="td-zone">{{ html_forms.base_zones_form.zone_temp_bottom.label }}</th>
-                            </tr>
-                            </thead>
-                            <tr class="td-zone_1">
-                                <td id="zone-time">1</td>
-                                <td>
-                                    {{ html_forms.base_zones_form.zone_time }}
-                                </td>
-                                <td>
-                                    {{ html_forms.base_zones_form.zone_temp_air }}
-                                </td>
-                                <td>
-                                    {{ html_forms.base_zones_form.zone_temp_bottom }}
-                                </td>
-                            </tr>
+                            {% for zone in zones_formset %}
+                                {% if forloop.first %}
+                                    <thead>
+                                    <tr>
+                                        <th class="td-zone">№ Зоны</th>
+                                        <th class="td-zone">{{ zone.zone_time.label }}</th>
+                                        <th class="td-zone">{{ zone.zone_temp_air.label }}</th>
+                                        {% if geometry_forms == 1 %}
+                                            <th class="td-zone">{{ zone.zone_temp_bottom.label }}</th>
+                                        {% endif %}
+                                    </tr>
+                                    </thead>
+                                {% endif %}
+                                <tbody>
+                                <tr class="td-zone_1">
+                                    <td id="zone-time">{{ forloop.counter }}</td>
+                                    <td>
+                                        {{ zone.zone_time }}
+                                    </td>
+                                    <td>
+                                        {{ zone.zone_temp_air }}
+                                    </td>
+                                    {% if geometry_forms == 1 %}
+                                        <td>
+                                            {{ zone.zone_temp_bottom }}
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
                         </table>
                     </div>
                     <div class="form--zones_table input-group input-group-sm mb-3">
                         <table id="table-zones-coef" class="table-zones">
+                            {% for zone in zones_formset %}
+                            {% if forloop.first %}
+
                             <thead>
                             <tr>
-                                <th class="td-zone">№</th>
-                                <th class="td-zone">{{ html_forms.base_zones_form.zone_thermal_coef.label }}</th>
-                                <th class="td-zone">{{ html_forms.base_zones_form.zone_thermal_coef_bottom.label }}</th>
+                                <th class="td-zone">№ Зоны</th>
+                                <th class="td-zone">{{ zone.zone_thermal_coef.label }}</th>
+                                {% if geometry_forms == 1 %}
+                                    <th class="td-zone">{{ zone.zone_thermal_coef_bottom.label }}</th>
+                                {% endif %}
                             </tr>
                             </thead>
-                            <tr class="td-zone_1">
-                                <td id="zone-coef">1</td>
-                                <td>
-                                    {{ html_forms.base_zones_form.zone_thermal_coef }}
-                                </td>
-                                <td>
-                                    {{ html_forms.base_zones_form.zone_thermal_coef_bottom }}
-                                </td>
-                            </tr>
+                        {% endif %}
+                            <tbody>
+                                <tr class="td-zone_1">
+                                    <td id="zone-coef">{{ forloop.counter }}</td>
+                                    <td>
+                                        {{ zone.zone_thermal_coef }}
+                                    </td>
+                                    {% if geometry_forms == 1 %}
+                                        <td>
+                                            {{ zone.zone_thermal_coef_bottom }}
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
                         </table>
                     </div>
 
                     <details>
                         <summary>{{ _('Продвинутые настройки') }}</summary>
-                        {{ html_forms.advanced_form }}
+                        <div>
+                            {{ html_forms.thickness_layers.label_tag }}
+                            {{ html_forms.thickness_layers.name.errors }}
+                            {{ html_forms.thickness_layers }}
+                        </div>
+                        <div>
+                            {{ html_forms.time_step.label_tag }}
+                            {{ html_forms.time_step.name.errors }}
+                            {{ html_forms.time_step }}
+                        </div>
                     </details>
                     <button class="btn btn-calc btn-primary" type="submit" value="calc" name="calc"
                             id="submit">{{ _("Расчет") }}
@@ -134,7 +179,7 @@
                     <h3>{{ _("Результаты расчета") }}</h3>
                     <div class="chart" id="plotty">
                         <script>
-                            var graphs = {{plot | safe}};
+                            let graphs = {{plot | safe}};
                             graphs.config = {
                                 displayModeBar: true,
                                 displaylogo: false,
