@@ -29,6 +29,8 @@ class ThermalView(View):
                                        formset=ThermalZonesFormSet)
         formset = ZonesFormset(request.POST or None, prefix='form')
         self.html_forms = ThermalForm(request.POST or None)
+        print(self.html_forms.errors)
+        print(formset.errors)
 
         prepared_data = PreparedData(thickness=self.html_forms.cleaned_data.get('thickness'),
                                      point_layers=self.html_forms.cleaned_data.get('thickness_layers'),

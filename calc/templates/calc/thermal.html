@@ -99,7 +99,7 @@
                                         <th class="td-zone">{{ zone.zone_time.label }}</th>
                                         <th class="td-zone">{{ zone.zone_temp_air.label }}</th>
                                         <th class="td-zone" {% if geometry_forms != 1 %}
-                                            hidden {% endif %}>{{ zone.zone_temp_bottom.label }}</th>
+                                            style="display: none" {% endif %}>{{ zone.zone_temp_bottom.label }}</th>
                                     </tr>
                                     </thead>
                                 {% endif %}
@@ -114,7 +114,7 @@
                                     <td>
                                         {{ zone.zone_temp_air }}
                                     </td>
-                                    <td {% if geometry_forms != 1 %} hidden {% endif %}>
+                                    <td {% if geometry_forms != 1 %} style="display: none" {% endif %}>
                                         {{ zone.zone_temp_bottom }}
                                     </td>
                                 </tr>
@@ -132,7 +132,7 @@
                                         <th class="td-zone">№ Зоны</th>
                                         <th class="td-zone">{{ zone.zone_thermal_coef.label }}</th>
                                         <th class="td-zone" {% if geometry_forms != 1 %}
-                                            hidden {% endif %}>{{ zone.zone_thermal_coef_bottom.label }}</th>
+                                            style="display: none" {% endif %}>{{ zone.zone_thermal_coef_bottom.label }}</th>
                                     </tr>
                                     </thead>
                                 {% endif %}
@@ -144,7 +144,7 @@
                                     <td>
                                         {{ zone.zone_thermal_coef }}
                                     </td>
-                                    <td {% if geometry_forms != 1 %} hidden {% endif %}>
+                                    <td {% if geometry_forms != 1 %} style="display: none" {% endif %}>
                                         {{ zone.zone_thermal_coef_bottom }}
                                     </td>
                                 </tr>
