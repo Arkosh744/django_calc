@@ -30,7 +30,7 @@ class ThermalForm(forms.Form):
     number_of_zones = forms.ChoiceField(label='Количество зон', choices=zones_state, initial=1,
                                         widget=forms.Select(attrs={'class': 'form-select form-control-small'}))
 
-    thickness_layers = forms.FloatField(label='Количество слоев по толщине', min_value=0, max_value=100, initial=20,
+    thickness_layers = forms.IntegerField(label='Количество слоев по толщине', min_value=0, max_value=100, initial=20,
                                         widget=forms.TextInput(attrs={'class': "form-control form-control-small"}))
     time_step = forms.FloatField(label='Шаг по времени, сек', min_value=0, max_value=5,
                                  initial=0.1,
@@ -42,12 +42,12 @@ class ThermalZones(forms.Form):
                                  initial=10, widget=forms.TextInput(attrs={'class': "form-control form-control-small"}))
     zone_temp_air = forms.FloatField(label='Температура окр. среды, °C', min_value=0, initial=150,
                                      widget=forms.TextInput(attrs={'class': "form-control form-control-small"}))
-    zone_temp_bottom = forms.FloatField(label='Температура поверхности, °C', min_value=-73, initial=150,
-                                        widget=forms.TextInput(attrs={'class': "form-control form-control-small"}))
-
     zone_thermal_coef = forms.FloatField(label='Коэф. теплопередачи, Вт/м²К', min_value=0, initial=1500,
                                          widget=forms.TextInput(attrs={'class': "form-control form-control-small"}))
-    zone_thermal_coef_bottom = forms.FloatField(label='Коэф. теплопередачи с поверхностью, Вт/м²К', min_value=0,
+
+    zone_temp_bottom = forms.FloatField(label='Температура поверхности, °C', min_value=-73, initial=150,
+                                        widget=forms.TextInput(attrs={'class': "form-control form-control-small"}))
+    zone_thermal_coef_bottom = forms.FloatField(label='Коэф. теплопередачи снизу, Вт/м²К', min_value=0,
                                                 initial=1500,
                                                 widget=forms.TextInput(
                                                     attrs={'class': "form-control form-control-small"}))

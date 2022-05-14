@@ -20,6 +20,7 @@ function clear(tr1, tr2) {
 
 zones_select.onchange = function zone_select_change() {
     clear(t1, t2)
+    $('#id_form-TOTAL_FORMS').val(zones_select.value);
 
     if (zones_select.value !== '1') {
         for (let current_row = 1; current_row < Math.floor(zones_select.value); current_row++) {
@@ -54,8 +55,6 @@ zones_select.onchange = function zone_select_change() {
             $('#table-zones-time tbody').append(t_time)
             $('#table-zones-coef tbody').append(t_coef)
         }
-
-        $('#id_form-TOTAL_FORMS').val(zones_select.value);
     }
 }
 
@@ -65,29 +64,17 @@ $('#id_geometry input:radio').click(function () {
     if ($(this).val() === '1') {
         document.getElementsByClassName('form-thickness')[0].innerHTML =
             '<label for="id_thickness">Толщина, мм:</label>' + thickness_input
-
-        if ($('#table-zones-time thead tr')[0].children.length < 4) {
-            $('#table-zones-time thead tr').append(temp_bottom)
-            $('#table-zones-time tbody tr').append(temp_bottom_input)
-        }
-
-        if ($('#table-zones-coef thead tr')[0].children.length < 3) {
-            $('#table-zones-coef thead tr').append(coef_bottom)
-            $('#table-zones-coef tbody tr').append(coef_bottom_input)
-        }
+            $('#table-zones-time thead tr th:nth-child(4)').show();
+            $('#table-zones-time tbody tr td:nth-child(4)').show()
+            $('#table-zones-coef thead tr th:nth-child(3)').show()
+            $('#table-zones-coef tbody tr td:nth-child(3)').show()
 
     } else {
         document.getElementsByClassName('form-thickness')[0].innerHTML =
             '<label for="id_thickness">Радиус, мм:</label>' + thickness_input
-
-        if ($('#table-zones-time thead tr')[0].children.length >= 4) {
-            $('#table-zones-time thead tr th:nth-child(4)').remove();
-            $('#table-zones-time tbody tr td:nth-child(4)').remove()
-        }
-
-        if ($('#table-zones-coef thead tr')[0].children.length >= 3) {
-            $('#table-zones-coef thead tr th:nth-child(3)').remove()
-            $('#table-zones-coef tbody tr td:nth-child(3)').remove()
-        }
+            $('#table-zones-time thead tr th:nth-child(4)').hide();
+            $('#table-zones-time tbody tr td:nth-child(4)').hide()
+            $('#table-zones-coef thead tr th:nth-child(3)').hide()
+            $('#table-zones-coef tbody tr td:nth-child(3)').hide()
     }
 });

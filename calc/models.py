@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List
 
 from django.db import models
@@ -64,10 +64,10 @@ class PreparedData:
     point_layers: int
     temp_ini: float
     form: int
-    time_in_zones: List[float]
-    time_step: float
-    k2: List[float]
-    temp_e2: List[float]
-    k1: List[float] = 0
-    temp_e1: List[float] = 0
+    time_step: float = 0.1
+    time_in_zones: List[float] = field(default_factory=list)
+    k2: List[float] = field(default_factory=list)
+    temp_e2: List[float] = field(default_factory=list)
+    k1: List[float] = field(default_factory=list)
+    temp_e1: List[float] = field(default_factory=list)
     material_data: "ThermalProps" = None
