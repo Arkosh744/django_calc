@@ -106,7 +106,10 @@
                             {% endfor %}
                             <tbody>
                             {% for zone in zones_formset %}
-                                <tr class="td-zone_1">
+                                <tr class="td-zone_{{ forloop.counter }}"
+                                        {% if forloop.counter > html_forms.number_of_zones.value %}
+                                    style="display: none" {% endif %}>
+
                                     <td id="zone-time">{{ forloop.counter }}</td>
                                     <td>
                                         {{ zone.zone_time }}
@@ -139,7 +142,9 @@
                             {% endfor %}
                             <tbody>
                             {% for zone in zones_formset %}
-                                <tr class="td-zone_1">
+                                <tr class="td-zone_{{ forloop.counter }}"
+                                        {% if forloop.counter > html_forms.number_of_zones.value %}
+                                    style="display: none" {% endif %}>
                                     <td id="zone-coef">{{ forloop.counter }}</td>
                                     <td>
                                         {{ zone.zone_thermal_coef }}

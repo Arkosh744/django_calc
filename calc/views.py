@@ -19,19 +19,21 @@ class ThermalView(View):
     geometry_forms = {1: 'Пластина', 2: 'Цилиндр', 3: 'Шар'}
 
     def get(self, request):
-        ZonesFormset = formset_factory(ThermalZones, extra=1, formset=ThermalZonesFormSet)
+        ZonesFormset = formset_factory(ThermalZones, extra=8, formset=ThermalZonesFormSet)
         formset = ZonesFormset()
         return render(request, 'calc/thermal.html',
                       context={'html_forms': self.html_forms, 'zones_formset': formset, 'geometry_forms': 1,})
 
     def post(self, request):
-        ZonesFormset = formset_factory(ThermalZones, extra=int(request.POST.get('number_of_zones')),
-                                       formset=ThermalZonesFormSet)
+        ZonesFormset = formset_factory(ThermalZones, formset=ThermalZonesFormSet)
         formset = ZonesFormset(request.POST or None, prefix='form')
         self.html_forms = ThermalForm(request.POST or None)
-        print(self.html_forms.errors)
-        print(formset.errors)
 
+        if not self.html_forms.is_valid() or not formset.is_valid():
+            return render(request, 'calc/thermal.html',
+                          context={'html_forms': self.html_forms, 'zones_formset': formset})
+
+        number_of_zones = int(self.html_forms.cleaned_data.get('number_of_zones'))
         prepared_data = PreparedData(thickness=self.html_forms.cleaned_data.get('thickness'),
                                      point_layers=self.html_forms.cleaned_data.get('thickness_layers'),
                                      temp_ini=self.html_forms.cleaned_data.get('temp_initial'),
@@ -39,7 +41,7 @@ class ThermalView(View):
                                      time_step=self.html_forms.cleaned_data.get('time_step'),
                                      )
 
-        for zone in formset.cleaned_data:
+        for zone in formset.cleaned_data[:number_of_zones]:
             prepared_data.time_in_zones.append(zone.get('zone_time'))
             prepared_data.k2.append(zone.get('zone_thermal_coef'))
             prepared_data.temp_e2.append(zone.get('zone_temp_air'))
@@ -51,15 +53,13 @@ class ThermalView(View):
                 prepared_data.temp_e1 = [0]
 
         cooling_form = True if prepared_data.temp_ini >= prepared_data.temp_e2[0] else False
-        get_mat_name = ChemistryThermal.objects.filter(id=request.POST.get('material_select'))[0].name
+        get_mat_name = ChemistryThermal.objects.get(id=request.POST.get('material_select')).name
         try:
-            material = ThermalProps.objects.filter(name=get_mat_name, cooling=cooling_form)[0]
-        except IndexError:
-            material = ThermalProps.objects.filter(get_mat_name)[0]
+            material = ThermalProps.objects.get(name=get_mat_name, cooling=cooling_form)
+        except ThermalProps.DoesNotExist:
+            material = ThermalProps.objects.get(name=get_mat_name)
 
         prepared_data.material_data = material
-        print(prepared_data)
-
         calculated_results = calc_results(prepared_data)
 
         thickness_text = 'Толщина, мм' if int(request.POST.get('geometry')) - 1 == 0 else 'Радиус, мм'
@@ -82,10 +82,9 @@ class ThermalView(View):
                        'Начальная температура, °C:' + str(prepared_data.temp_ini) + '\n' + \
                        'Количество зон: ' + request.POST.get('number_of_zones') + '\n'
 
-
         return render(request, 'calc/thermal.html',
                       context={'html_forms': self.html_forms,
-                               'number_of_zones': range(1, int(request.POST.get('number_of_zones')) + 1),
+                               'number_of_zones': range(1, number_of_zones + 1), # Для генерации таблицы результатов
                                'zones_formset': formset,
                                'table_data': table_data, 'geometry_forms': int(request.POST.get('geometry')),
                                'plot': graphJSON,
