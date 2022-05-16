@@ -1,16 +1,5 @@
 const zones_select = document.getElementById("id_number_of_zones");
-const thickness_input = '<input type="text" name="thickness" value="30" class="form-control form-control-small" ' +
-    'required="" id="id_thickness">'
 
-const initial_time = $('#table-zones-time tbody tr:first-child')
-const t1 = initial_time[0]
-const initial_coef = $('#table-zones-coef tbody tr:first-child')
-const t2 = initial_coef[0]
-
-function clear(tr1, tr2) {
-    $('#table-zones-time tbody').empty().append(tr1)
-    $('#table-zones-coef tbody').empty().append(tr2)
-}
 function geometry_select_change() {
     if ($('#id_geometry input:radio:checked').val() === '1') {
         $('.form-thickness label').text('Толщина, мм:')
