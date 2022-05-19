@@ -177,6 +177,11 @@
                 </form>
             </div>
             <div class="div-results card shadow-sm">
+                {% if result_object %}
+                    <div style="display: none;" id="id-results">
+                    {{ result_object.id }}
+                    </div>
+                {% endif %}
                 {% if plot %}
                     <div class="div2">
                     <h3>{{ _("Результаты расчета") }}</h3>
@@ -191,37 +196,83 @@
                                 showLink: true,
                                 plotlyServerURL: "https://chart-studio.plotly.com",
                                 linkText: '{{ _('Edit Online') }}',
-                                modeBarButtonsToAdd: ['drawline']
                             }
                             Plotly.plot('plotty', graphs, {});
+                        </script>
+                    </div>
+                    <div class="chart" id="plotty_2">
+                        <script>
+                            let graphs_2 = {{plot_2 | safe}};
+                            graphs_2.config = {
+                                displayModeBar: true,
+                                displaylogo: false,
+                                modeBarButtonsToRemove: ['toImage', 'pan2d', 'zoom2d', 'select2d',
+                                    'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d'],
+                                showLink: true,
+                                plotlyServerURL: "https://chart-studio.plotly.com",
+                                linkText: '{{ _('Edit Online') }}',
+                            }
+                            Plotly.plot('plotty_2', graphs_2, {});
                         </script>
                     </div>
                 {% endif %}
 
                 </div>
                 <div class="div3">
-                    <h3 id="table-result">{{ _("Таблица для экспорта") }}</h3>
-                    <table class="table table-sm" id="resultData">
-                        <thead>
-                        <th>{{ thickness_text }}</th>
-                        {% for column in number_of_zones %}
-                            <th>Зона {{ column }}, °C</th>
-                        {% endfor %}</thead>
-                        <tbody>
-                        {% for row in table_data %}
-                            <tr>
-                                {% for value in row %}
-                                    <td>{{ value }}</td>
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                    <div>
-                        <a download="results.xlsx" class="btn btn-outline-success"
-                           onclick="return ExcellentExport.convert({ anchor: this, filename: 'results', format: 'xlsx'},
+                    {% if table_data %}
+                        <h3 id="table-result">{{ _("Таблица для экспорта") }}</h3>
+                        <table class="table table-sm" id="resultData">
+                            <thead>
+                            <th>{{ thickness_text }}</th>
+                            {% for column in number_of_zones %}
+                                <th>Зона {{ column }}, °C</th>
+                            {% endfor %}</thead>
+                            <tbody>
+                            {% for row in table_data %}
+                                <tr>
+                                    {% for value in row %}
+                                        <td>{{ value }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div>
+                            <a download="results.xlsx" class="btn btn-outline-success"
+                               onclick="return ExcellentExport.convert({ anchor: this, filename: 'results', format: 'xlsx'},
                        [{name: 'Results', from: {table: 'resultData'}}]);">Export to xlsx</a>
-                    </div>
+                        </div>
+                    {% endif %}
+                    {% if table_data %}
+                        <table class="table table-sm" id="resultData_temp_change">
+                            <thead>
+                            <th>Время, сек</th>
+                            <th>Температура, °C</th>
+                            <th>Скорость изменения температуры, °C / сек</th>
+                            </thead>
+                            <tbody>
+                            {% for current_result in calculated_results %}
+                                {% for current_value_list in current_result %}
+                                    <tr>
+                                        {% for current_value in current_value_list %}
+                                            {% if forloop.last %}
+                                                <td>{{ current_value|floatformat:2 }}</td>
+                                            {% else %}
+                                                <td>{{ current_value|floatformat:2 }}</td>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                    </tr>
+                                {% endfor %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div>
+                            <a download="results_temp_change.xlsx" class="btn btn-outline-success"
+                               onclick="return ExcellentExport.convert({ anchor: this, filename: 'results_temp_change', format: 'xlsx'},
+                       [{name: 'Results_temp_change', from: {table: 'resultData_temp_change'}}]);">Export to xlsx</a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

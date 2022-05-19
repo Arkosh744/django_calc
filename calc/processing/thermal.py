@@ -62,25 +62,29 @@ def value_prop(T: float, material_data: ThermalProps):
     return dens, cond, cp
 
 
-def iteration(tau, current_zone_time, temp, prepared_data, h, r_pos, r_posn, r_posp, current_zone):
+def iteration(tau, current_zone_time, temp, prepared_data, h, r_pos, r_posn, r_posp, current_zone, result_list):
     """Функция итерирует, на вход шаг по времени, общее время, температура по ячейкам, материал, коэффициент формы,
     размер ячейки, координаты, координаты со сдвигом минус, координаты со сдвигом плюс, коэффициент теплоотдачи и
     температура снаружи, коэффициент теплоотдачи и температуры внутри """
     point_layers = prepared_data.point_layers
-    timer = 0
     alpha = [0 for _ in range(0, prepared_data.point_layers)]
     beta = alpha[:]
     conduct = alpha[:]
     denssph = alpha[:]
-    res_temp = [[0, prepared_data.temp_ini, 0]]  # результирующий массив время - температура - скорость охлаждения
-    while timer < current_zone_time:
+    if current_zone == 0:
+        res_temp = [[0, prepared_data.temp_ini, 0]]
+    else:
+        res_temp = [[0, result_list[-1][-1][1], result_list[-1][-1]][2]]
 
-        timer += tau
+    timer = 0 if current_zone == 0 else result_list[-1][-1][0]
+
+    while timer < sum(current_zone_time[:current_zone+1]):
         temp_pred = temp[:]
 
-        # for iterometer in range(0, 10):
         delta = 1
         iterometer = 0
+        timer = round((timer + tau), 2)
+
         while iterometer < 10 and delta > 0.001:
             iterometer += 1
             temp_s = temp[:]
@@ -122,17 +126,10 @@ def iteration(tau, current_zone_time, temp, prepared_data, h, r_pos, r_posn, r_p
                     conduct[-1] * beta[-2] + h * k2 * temp_e2)) / (
                                conduct[-1] * h ** 2 + multi_a * (h * k2 + conduct[-1] * (1 - alpha[-2])))
 
-
             for i in range(point_layers - 2, -1, -1):
-                # print(f'{i=}')
                 temp[i] = alpha[i] * temp[i + 1] + beta[i]
-                # print(f'{temp=}')
 
-            # print(max(temp))
             delta = max([abs(temp[i] - temp_s[i]) for i in range(0, point_layers)]) / max(temp)
-            # if delta < 0.001:
-            #     print('Конец')
-            #     break
         temp_medium1 = temp[0] * (r_posp[0]) ** (form + 1) + temp[-1] * \
                        (r_pos[-1] ** (form + 1) - (r_posn[-1] ** (form + 1)))
 
@@ -140,8 +137,8 @@ def iteration(tau, current_zone_time, temp, prepared_data, h, r_pos, r_posn, r_p
                             for i in range(1, point_layers - 1)])
         temp_medium = (temp_medium2 + temp_medium1) / (prepared_data.thickness /1000) ** (form + 1)
         vel_temp = (temp_medium - float(res_temp[-1][1])) / tau
-
         res_temp.append([timer, temp_medium, vel_temp])
+
     return temp, res_temp
 
 
@@ -150,15 +147,15 @@ def main(prepared_data: PreparedData):
     r_pos = [h * i for i in range(0, prepared_data.point_layers)]
     r_posn = [i - h / 2 for i in r_pos]
     r_posp = [i + h / 2 for i in r_pos]
-    result_temp = []
-    result_list = []
+    result_temp = list()
+    result_list = list()
     temp = [prepared_data.temp_ini for _ in range(0, prepared_data.point_layers)]
     for current_zone, current_zone_time in enumerate(prepared_data.time_in_zones):
         nn = current_zone_time // prepared_data.time_step  # Сколько итераций
         tau = current_zone_time / nn  # Временной шаг
-
-        temp, res = iteration(tau, current_zone_time, temp, prepared_data, h, r_pos, r_posn, r_posp, current_zone)
+        temp, res = iteration(tau, prepared_data.time_in_zones, temp, prepared_data,
+                              h, r_pos, r_posn, r_posp, current_zone, result_list)
         # И это искомые результаты. их куда то выводить.
         result_temp += [temp[:]]
-        result_list += res[:]
+        result_list += [res[:]]
     return {'result_temp': result_temp, 'result_list': result_list, 'thickness_points': r_pos}

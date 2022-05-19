@@ -58,6 +58,36 @@ class ThermalProps(models.Model):
         return f'{self.name}'
 
 
+class CalculatedResults(models.Model):
+
+    created_at = models.DateTimeField(null=False)
+    expiration_date = models.DateTimeField(null=False)
+
+    steel_grade_name = models.CharField(max_length=100, null=False)
+    steel_grade_id_chemistry = models.ForeignKey(ChemistryThermal, on_delete=models.CASCADE, null=False)
+    steel_grade_id_prop = models.ForeignKey(ThermalProps, on_delete=models.CASCADE, null=False)
+
+    geometry = models.IntegerField(null=False)
+    thickness = models.FloatField(null=False)
+    thickness_points = ArrayField(models.FloatField(), null=False, default=list)
+    initial_temperature = models.FloatField(null=False)
+    zones_number = models.IntegerField(null=False)
+    time_in_zones = ArrayField(models.FloatField(), null=False)
+    temp_in_zones = ArrayField(models.FloatField(), null=False)
+    coef_in_zones = ArrayField(models.FloatField(), null=False)
+    temp_in_zones_bottom = ArrayField(models.FloatField(), null=True)
+    coef_in_zones_bottom = ArrayField(models.FloatField(), null=True)
+    thickness_layers = models.IntegerField(null=False)
+    time_step = models.FloatField(null=False)
+
+    result_zones = ArrayField(ArrayField(models.FloatField()), null=False)
+
+    result_time = ArrayField(ArrayField(models.FloatField()), size=2, null=False)
+    result_temperature = ArrayField(ArrayField(models.FloatField()), size=2, null=False)
+    result_change_rate = ArrayField(ArrayField(models.FloatField()), size=2, null=False)
+
+
+
 @dataclass
 class PreparedData:
     thickness: float

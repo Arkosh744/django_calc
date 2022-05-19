@@ -21,7 +21,6 @@ function zone_select_change() {
     let table_1 = $(`#table-zones-time tbody tr`).hide()
     let table_2 = $(`#table-zones-coef tbody tr`).hide()
     for (let current_row = 1; current_row <= Math.floor(zones_select.value); current_row++) {
-        console.log(current_row, Math.floor(zones_select.value))
         table_1.eq(current_row - 1).show()
         table_2.eq(current_row - 1).show()
     }

@@ -30,6 +30,10 @@ div .div1 {
     margin-bottom: 0.7rem;
 }
 
+div .div-results {
+    border: 0.05rem solid rgba(0,0,0,.125);
+}
+
 .parent .div-results {
     display: flex;
     flex-flow: row wrap;
