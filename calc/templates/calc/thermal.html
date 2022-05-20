@@ -176,13 +176,12 @@
                     </button>
                 </form>
             </div>
+            {% if plot %}
             <div class="div-results card shadow-sm">
-
-                {% if plot %}
                     <div class="div2">
                     <h3>{{ _("Результаты расчета") }}</h3>
                     <a href="{% url 'api_thermal_export_excel' result_id=result_object.id %}"
-                       class="btn-cards-excel" target="_blank">Выгрузить результаты расчета в Excel</a>
+                       class="btn btn-outline-success" target="_blank">Выгрузить результаты расчета в Excel</a>
                     <div class="chart" id="plotty">
                         <script>
                             let graphs = {{plot | safe}};
@@ -213,7 +212,7 @@
                             Plotly.plot('plotty_2', graphs_2, {});
                         </script>
                     </div>
-                {% endif %}
+
 
                 </div>
                 <div class="div3">
@@ -272,7 +271,9 @@
                         </div>
                     {% endif %}
                 </div>
+
             </div>
+        {% endif %}
         </div>
         {#    <script type="text/javascript" src="{{ url_for('static', filename='chemistry.js') }}"></script>#}
 

@@ -11,13 +11,9 @@
     border-radius: 20px;
 }
 
-div .btn-cards-excel {
-    background-color: rgb(16, 124, 65);
-    font-size: 14px;
-}
 
 .btn-portal-link {
-    background-color: rgba(252, 78, 94, 0.87);
+    background-color: rgb(16, 124, 65);
 }
 
 .btn-flag {
@@ -46,7 +42,7 @@ div .btn-cards-excel {
 }
 
 .btn-cards-link {
-    background-color: #002f6c;
+    background-color: #3763f4;
 }
 
 

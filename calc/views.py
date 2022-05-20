@@ -230,16 +230,16 @@ class ApiThermalExportExcel(View):
         worksheet_2.insert_chart('J2', chart_2)
         # chart_3 = workbook.add_chart({'type': 'line'})
         # worksheet_3.insert_chart('J2', chart_3)
+        worksheet_1.set_column(0, 0, 29)
 
-        worksheet_1.set_column(0, 0, 47)
-        worksheet_1.write(0, 0,
-                          f'Расчет от {(result_data.created_at + datetime.timedelta(hours=3)).strftime("%d.%m.%Y %H:%m")}')
+        created_date_msk_time = (result_data.created_at + datetime.timedelta(hours=3)).strftime("%d.%m.%Y %H:%m")
+        worksheet_1.write(0, 0, f'Расчет от {created_date_msk_time}')
         worksheet_1.write(2, 0, f'Марка стали')
         worksheet_1.write(2, 1, f'{result_data.steel_grade_name}')
         worksheet_1.write(3, 0, f'Геометрическая форма')
         worksheet_1.write(3, 1, f'{self.geometry_forms.get(int(result_data.geometry))}')
-        worksheet_1.write(4, 0, f'Толщина, мм') if int(result_data.geometry) == 0 else worksheet_1.write(3, 0,
-                                                                                                         f'Радиус, мм')
+        worksheet_1.write(4, 0, f'Толщина, мм') if int(result_data.geometry) == 0 \
+            else worksheet_1.write(4, 0, f'Радиус, мм')
         worksheet_1.write(4, 1, result_data.thickness)
         worksheet_1.write(5, 0, f'Начальная температура, °C')
         worksheet_1.write(5, 1, result_data.initial_temperature)
