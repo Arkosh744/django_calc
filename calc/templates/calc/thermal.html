@@ -177,14 +177,12 @@
                 </form>
             </div>
             <div class="div-results card shadow-sm">
-                {% if result_object %}
-                    <div style="display: none;" id="id-results">
-                    {{ result_object.id }}
-                    </div>
-                {% endif %}
+
                 {% if plot %}
                     <div class="div2">
                     <h3>{{ _("Результаты расчета") }}</h3>
+                    <a href="{% url 'api_thermal_export_excel' result_id=result_object.id %}"
+                       class="btn-cards-excel" target="_blank">Выгрузить результаты расчета в Excel</a>
                     <div class="chart" id="plotty">
                         <script>
                             let graphs = {{plot | safe}};

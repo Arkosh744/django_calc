@@ -1,5 +1,4 @@
-.btn-portal-link, .btn-cards-link {
-    background-color: rgba(252, 78, 94, 0.87);
+.btn-portal-link, .btn-cards-link, .btn-cards-excel {
     border: none;
     color: white;
     padding: 4px 14px;
@@ -10,6 +9,11 @@
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 20px;
+}
+
+div .btn-cards-excel {
+    background-color: rgb(16, 124, 65);
+    font-size: 14px;
 }
 
 .btn-portal-link {

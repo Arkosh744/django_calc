@@ -1,13 +1,16 @@
 # Create your views here.
+import csv
 import json
 import datetime
+import io
+import xlsxwriter
 
 import plotly
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 from django.forms import formset_factory
-from django.http import HttpResponseNotFound
-from django.shortcuts import render
+from django.http import HttpResponseNotFound, HttpResponse, FileResponse
+from django.shortcuts import render, get_object_or_404
 from django.views import View
 
 from .forms.forming import FormingForm
@@ -206,8 +209,91 @@ class ApiMaterialElements(View):
     def get(self, request):
         return HttpResponseNotFound()
 
-    def post(self, request):
-        self.html_forms = ThermalForm(request.POST or None)
+
+class ApiThermalExportExcel(View):
+    """Дока библиотеки https://xlsxwriter.readthedocs.io/index.html """
+    geometry_forms = {0: 'Пластина', 1: 'Цилиндр', 2: 'Шар'}
+    column_index = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J', 10: 'K', 11: 'L',
+                    12: 'M', 13: 'N', 14: 'O', 15: 'P', 16: 'Q', 17: 'R', 18: 'S', 19: 'T', 20: 'U', 21: 'V', 22: 'W'}
+
+    def get(self, request, result_id):
+        result_data = get_object_or_404(CalculatedResults, id=result_id)
+        filename = f'Thermal, {result_data.steel_grade_name}, {result_data.created_at.strftime("%d.%m.%Y")}'
+        buffer = io.BytesIO()
+        workbook = xlsxwriter.Workbook(buffer)
+
+        worksheet_1 = workbook.add_worksheet('Исходные данные')
+        worksheet_2 = workbook.add_worksheet('Рез-Температура')
+        worksheet_3 = workbook.add_worksheet('Рез-Скорость_Изм_Темп')
+
+        chart_2 = workbook.add_chart({'type': 'scatter', 'subtype': 'smooth_with_markers'})
+        worksheet_2.insert_chart('J2', chart_2)
+        # chart_3 = workbook.add_chart({'type': 'line'})
+        # worksheet_3.insert_chart('J2', chart_3)
+
+        worksheet_1.set_column(0, 0, 47)
+        worksheet_1.write(0, 0,
+                          f'Расчет от {(result_data.created_at + datetime.timedelta(hours=3)).strftime("%d.%m.%Y %H:%m")}')
+        worksheet_1.write(2, 0, f'Марка стали')
+        worksheet_1.write(2, 1, f'{result_data.steel_grade_name}')
+        worksheet_1.write(3, 0, f'Геометрическая форма')
+        worksheet_1.write(3, 1, f'{self.geometry_forms.get(int(result_data.geometry))}')
+        worksheet_1.write(4, 0, f'Толщина, мм') if int(result_data.geometry) == 0 else worksheet_1.write(3, 0,
+                                                                                                         f'Радиус, мм')
+        worksheet_1.write(4, 1, result_data.thickness)
+        worksheet_1.write(5, 0, f'Начальная температура, °C')
+        worksheet_1.write(5, 1, result_data.initial_temperature)
+        worksheet_1.write(6, 0, f'Количество зон')
+        worksheet_1.write(6, 1, result_data.zones_number)
+
+        worksheet_1.write(8, 0, f'Настройки расчета:')
+        worksheet_1.write(9, 0, f'Количество слоев по толщине:')
+        worksheet_1.write(9, 1, result_data.thickness_layers)
+        worksheet_1.write(10, 0, f'Шаг по времени, сек:')
+        worksheet_1.write(10, 1, result_data.time_step)
+
+        worksheet_1.write(12, 0, f'Зона:')
+        worksheet_1.write(13, 0, f'Время в зонах, сек')
+        worksheet_1.write(14, 0, f'Температура по зонам, °C')
+        worksheet_1.write(15, 0, f'Коэф. теплопередачи, Вт/м²К')
+        worksheet_1.write(16, 0, f'Температура поверхности, °C') if int(result_data.geometry) == 0 else None
+        worksheet_1.write(17, 0, f'Коэф. теплопередачи с поверхностью, Вт/м²К') if int(
+            result_data.geometry) == 0 else None
+        worksheet_1.write(20, 0, f'Результаты расчетов на страницах 2 и 3')
+
+        worksheet_2.write(0, 0, f'Распределение температур по толщине')
+        worksheet_2.write(1, 0, f'Толщина, мм') if int(result_data.geometry) == 0 \
+            else worksheet_2.write(1, 0, f'Радиус, мм')
+
+        worksheet_3.write(0, 0, f'Распределение температур по толщине')
+
+        for i in range(result_data.zones_number):
+            worksheet_1.write(12, i + 1, i + 1)
+            worksheet_1.write(13, i + 1, result_data.time_in_zones[i])
+            worksheet_1.write(14, i + 1, result_data.temp_in_zones[i])
+            worksheet_1.write(15, i + 1, result_data.coef_in_zones[i])
+            worksheet_1.write(16, i + 1, result_data.temp_in_zones_bottom[i]) if int(
+                result_data.geometry) == 0 else None
+            worksheet_1.write(17, i + 1, result_data.coef_in_zones_bottom[i]) if int(
+                result_data.geometry) == 0 else None
+
+            worksheet_2.write(1, i + 1, f'Зона {i + 1}')
+            for j in range(result_data.thickness_layers):
+                worksheet_2.write(j + 2, i, result_data.thickness_points[j]) if i == 0 else None
+                worksheet_2.write(j + 2, i + 1, result_data.result_zones[i][j])
+
+            chart_2.add_series({
+                'categories': f"'Рез-Температура'!${self.column_index[i+1]}$3:"
+                              f"${self.column_index[i+1]}${result_data.thickness_layers + 2}",
+                'values': f"'Рез-Температура'!$A$3:$A${result_data.thickness_layers + 2}"})
+
+        print(result_data.result_time)
+        print(list(result_data.result_time))
+
+        workbook.close()
+        buffer.seek(0)
+
+        return FileResponse(buffer, as_attachment=True, filename=f'{filename}.xlsx')
 
 
 def barrel(request):
