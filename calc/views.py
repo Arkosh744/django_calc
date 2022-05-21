@@ -12,6 +12,7 @@ from django.forms import formset_factory
 from django.http import HttpResponseNotFound, HttpResponse, FileResponse
 from django.shortcuts import render, get_object_or_404
 from django.views import View
+from xlsxwriter.utility import xl_col_to_name
 
 from .forms.forming import FormingForm
 from .forms.thermal import ThermalForm, ThermalZones, ThermalZonesFormSet
@@ -226,12 +227,17 @@ class ApiThermalExportExcel(View):
         worksheet_2 = workbook.add_worksheet('Рез-Температура')
         worksheet_3 = workbook.add_worksheet('Рез-Скорость_Изм_Темп')
 
-        chart_2 = workbook.add_chart({'type': 'scatter', 'subtype': 'smooth_with_markers'})
-        worksheet_2.insert_chart('J2', chart_2)
-        # chart_3 = workbook.add_chart({'type': 'line'})
-        # worksheet_3.insert_chart('J2', chart_3)
-        worksheet_1.set_column(0, 0, 29)
+        cell_format = workbook.add_format()
+        cell_format.set_text_wrap()
+        cell_format.set_align('center')
+        cell_format.set_align('vcenter')
 
+        chart_2 = workbook.add_chart({'type': 'scatter', 'subtype': 'smooth'})
+        worksheet_2.insert_chart('J2', chart_2)
+        chart_3 = workbook.add_chart({'type': 'scatter', 'subtype': 'smooth'})
+        worksheet_3.insert_chart('C7', chart_3)
+
+        worksheet_1.set_column(0, 0, 29)
         created_date_msk_time = (result_data.created_at + datetime.timedelta(hours=3)).strftime("%d.%m.%Y %H:%m")
         worksheet_1.write(0, 0, f'Расчет от {created_date_msk_time}')
         worksheet_1.write(2, 0, f'Марка стали')
@@ -265,7 +271,7 @@ class ApiThermalExportExcel(View):
         worksheet_2.write(1, 0, f'Толщина, мм') if int(result_data.geometry) == 0 \
             else worksheet_2.write(1, 0, f'Радиус, мм')
 
-        worksheet_3.write(0, 0, f'Распределение температур по толщине')
+        worksheet_3.write(0, 0, f'Изменение температур во времени')
 
         for i in range(result_data.zones_number):
             worksheet_1.write(12, i + 1, i + 1)
@@ -282,13 +288,64 @@ class ApiThermalExportExcel(View):
                 worksheet_2.write(j + 2, i, result_data.thickness_points[j]) if i == 0 else None
                 worksheet_2.write(j + 2, i + 1, result_data.result_zones[i][j])
 
+            for j in range(len(result_data.result_time[i]) + 1):
+                if j == 0:
+                    worksheet_3.write(j + 1, 4 * i, f'Зона {i + 1}',
+                                      cell_format) if result_data.zones_number > 1 else None
+                    worksheet_3.write(j + 2, 4 * i, f'Время, сек', cell_format)
+                    worksheet_3.write(j + 2, 4 * i + 1, f'Температура, °C', cell_format)
+                    worksheet_3.write(j + 2, 4 * i + 2, f'Скорость изм. темп-ры, °C/сек', cell_format)
+                    worksheet_3.set_column(j + 2, 4 * i, 11)
+                    worksheet_3.set_column(j + 2, 4 * i + 1, 15.5)
+                    worksheet_3.set_column(j + 2, 4 * i + 2, 16)
+                else:
+                    worksheet_3.write(j + 2, 4 * i, result_data.result_time[i][j - 1])
+                    worksheet_3.write(j + 2, 4 * i + 1, result_data.result_temperature[i][j - 1])
+                    worksheet_3.write(j + 2, 4 * i + 2, result_data.result_change_rate[i][j - 1])
+
+            chart_3.add_series({
+                'name': f'Изменение температуры в зоне {i + 1}, °C',
+                'values': f"'Рез-Скорость_Изм_Темп'!${xl_col_to_name(4 * i + 1, False)}$4:"
+                          f"${xl_col_to_name(4 * i + 1, False)}${len(result_data.result_time[i]) + 3}",
+                'categories': f"'Рез-Скорость_Изм_Темп'!${xl_col_to_name(4 * i, False)}$4:"
+                              f"${xl_col_to_name(4 * i, False)}${len(result_data.result_time[i]) + 3}",
+                'y2_axis': 1, })
+
+            # Тут есть if == 0 чтобы не было скачка 0 в первой зоне
+            if i != 0:
+                chart_3.add_series({
+                    'name': f'Скорость изм. темп-ры зоны {i + 1}, °C/сек',
+                    'values': f"'Рез-Скорость_Изм_Темп'!${xl_col_to_name(4 * i + 2, False)}$4:"
+                              f"${xl_col_to_name(4 * i + 2, False)}${len(result_data.result_time[i]) + 3}",
+                    'categories': f"'Рез-Скорость_Изм_Темп'!${xl_col_to_name(4 * i, False)}$4:"
+                                  f"${xl_col_to_name(4 * i, False)}$"
+                                  f"{len(result_data.result_time[i]) + 3}"})
+            else:
+                print(f'Скорость изм. темп-ры зоны {i + 1}, °C/сек')
+                chart_3.add_series({
+                    'name': f'Скорость изм. темп-ры зоны {i + 1}, °C/сек',
+                    'values': f"'Рез-Скорость_Изм_Темп'!${xl_col_to_name(4 * i + 2, False)}$5:"
+                              f"${xl_col_to_name(4 * i + 2, False)}${len(result_data.result_time[i]) + 3}",
+                    'categories': f"'Рез-Скорость_Изм_Темп'!${xl_col_to_name(4 * i, False)}$5:"
+                                  f"${xl_col_to_name(4 * i, False)}${len(result_data.result_time[i]) + 3}"})
+
             chart_2.add_series({
-                'categories': f"'Рез-Температура'!${self.column_index[i+1]}$3:"
-                              f"${self.column_index[i+1]}${result_data.thickness_layers + 2}",
+                'name': f'Зона {i + 1}, °C',
+                'categories': f"'Рез-Температура'!${xl_col_to_name(i + 1, False)}$3:"
+                              f"${xl_col_to_name(i + 1, False)}${result_data.thickness_layers + 2}",
                 'values': f"'Рез-Температура'!$A$3:$A${result_data.thickness_layers + 2}"})
 
-        print(result_data.result_time)
-        print(list(result_data.result_time))
+        chart_2.set_title({'name': 'Распределение температур'})
+        chart_2.set_x_axis({'name': 'Температура, °C', })
+        chart_2.set_y_axis({'name': 'Толщина, мм'}) if int(result_data.geometry) == 0 else \
+            chart_2.set_y_axis({'name': 'Радиус, мм'})
+        chart_2.set_size({'width': 560, 'height': 360})
+
+        chart_3.set_title({'name': 'Изменение температур во времени'})
+        chart_3.set_x_axis({'name': 'Время, сек', })
+        chart_3.set_y_axis({'name': 'Скорость изм. темп-ры, °C/сек'})
+        chart_3.set_y2_axis({'name': 'Температура, °C'})
+        chart_3.set_size({'width': 880, 'height': 480})
 
         workbook.close()
         buffer.seek(0)
