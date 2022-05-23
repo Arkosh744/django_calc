@@ -203,9 +203,7 @@ class ThermalView(View):
         return graphJSON_2, result_dict
 
 
-class ApiMaterialElements(View):
-    html_forms = ThermalForm()
-    geometry_forms = {1: 'Пластина', 2: 'Цилиндр', 3: 'Шар'}
+class ApiThermalMaterialElements(View):
 
     def get(self, request):
         return HttpResponseNotFound()
@@ -214,29 +212,28 @@ class ApiMaterialElements(View):
 class ApiThermalExportExcel(View):
     """Дока библиотеки https://xlsxwriter.readthedocs.io/index.html """
     geometry_forms = {0: 'Пластина', 1: 'Цилиндр', 2: 'Шар'}
-    column_index = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J', 10: 'K', 11: 'L',
-                    12: 'M', 13: 'N', 14: 'O', 15: 'P', 16: 'Q', 17: 'R', 18: 'S', 19: 'T', 20: 'U', 21: 'V', 22: 'W'}
 
     def get(self, request, result_id):
         result_data = get_object_or_404(CalculatedResults, id=result_id)
         filename = f'Thermal, {result_data.steel_grade_name}, {result_data.created_at.strftime("%d.%m.%Y")}'
+        buffer = self.create_xls_thermal(result_data)
+
+        return FileResponse(buffer, as_attachment=True, filename=f'{filename}.xlsx')
+
+    def create_xls_thermal(self, result_data):
         buffer = io.BytesIO()
         workbook = xlsxwriter.Workbook(buffer)
-
         worksheet_1 = workbook.add_worksheet('Исходные данные')
         worksheet_2 = workbook.add_worksheet('Рез-Температура')
         worksheet_3 = workbook.add_worksheet('Рез-Скорость_Изм_Темп')
-
         cell_format = workbook.add_format()
         cell_format.set_text_wrap()
         cell_format.set_align('center')
         cell_format.set_align('vcenter')
-
         chart_2 = workbook.add_chart({'type': 'scatter', 'subtype': 'smooth'})
         worksheet_2.insert_chart('J2', chart_2)
         chart_3 = workbook.add_chart({'type': 'scatter', 'subtype': 'smooth'})
         worksheet_3.insert_chart('C7', chart_3)
-
         worksheet_1.set_column(0, 0, 29)
         created_date_msk_time = (result_data.created_at + datetime.timedelta(hours=3)).strftime("%d.%m.%Y %H:%m")
         worksheet_1.write(0, 0, f'Расчет от {created_date_msk_time}')
@@ -251,13 +248,11 @@ class ApiThermalExportExcel(View):
         worksheet_1.write(5, 1, result_data.initial_temperature)
         worksheet_1.write(6, 0, f'Количество зон')
         worksheet_1.write(6, 1, result_data.zones_number)
-
         worksheet_1.write(8, 0, f'Настройки расчета:')
         worksheet_1.write(9, 0, f'Количество слоев по толщине:')
         worksheet_1.write(9, 1, result_data.thickness_layers)
         worksheet_1.write(10, 0, f'Шаг по времени, сек:')
         worksheet_1.write(10, 1, result_data.time_step)
-
         worksheet_1.write(12, 0, f'Зона:')
         worksheet_1.write(13, 0, f'Время в зонах, сек')
         worksheet_1.write(14, 0, f'Температура по зонам, °C')
@@ -266,13 +261,10 @@ class ApiThermalExportExcel(View):
         worksheet_1.write(17, 0, f'Коэф. теплопередачи с поверхностью, Вт/м²К') if int(
             result_data.geometry) == 0 else None
         worksheet_1.write(20, 0, f'Результаты расчетов на страницах 2 и 3')
-
         worksheet_2.write(0, 0, f'Распределение температур по толщине')
         worksheet_2.write(1, 0, f'Толщина, мм') if int(result_data.geometry) == 0 \
             else worksheet_2.write(1, 0, f'Радиус, мм')
-
         worksheet_3.write(0, 0, f'Изменение температур во времени')
-
         for i in range(result_data.zones_number):
             worksheet_1.write(12, i + 1, i + 1)
             worksheet_1.write(13, i + 1, result_data.time_in_zones[i])
@@ -321,7 +313,6 @@ class ApiThermalExportExcel(View):
                                   f"${xl_col_to_name(4 * i, False)}$"
                                   f"{len(result_data.result_time[i]) + 3}"})
             else:
-                print(f'Скорость изм. темп-ры зоны {i + 1}, °C/сек')
                 chart_3.add_series({
                     'name': f'Скорость изм. темп-ры зоны {i + 1}, °C/сек',
                     'values': f"'Рез-Скорость_Изм_Темп'!${xl_col_to_name(4 * i + 2, False)}$5:"
@@ -334,23 +325,19 @@ class ApiThermalExportExcel(View):
                 'categories': f"'Рез-Температура'!${xl_col_to_name(i + 1, False)}$3:"
                               f"${xl_col_to_name(i + 1, False)}${result_data.thickness_layers + 2}",
                 'values': f"'Рез-Температура'!$A$3:$A${result_data.thickness_layers + 2}"})
-
         chart_2.set_title({'name': 'Распределение температур'})
         chart_2.set_x_axis({'name': 'Температура, °C', })
         chart_2.set_y_axis({'name': 'Толщина, мм'}) if int(result_data.geometry) == 0 else \
             chart_2.set_y_axis({'name': 'Радиус, мм'})
         chart_2.set_size({'width': 560, 'height': 360})
-
         chart_3.set_title({'name': 'Изменение температур во времени'})
         chart_3.set_x_axis({'name': 'Время, сек', })
         chart_3.set_y_axis({'name': 'Скорость изм. темп-ры, °C/сек'})
         chart_3.set_y2_axis({'name': 'Температура, °C'})
         chart_3.set_size({'width': 880, 'height': 480})
-
         workbook.close()
         buffer.seek(0)
-
-        return FileResponse(buffer, as_attachment=True, filename=f'{filename}.xlsx')
+        return buffer
 
 
 def barrel(request):
