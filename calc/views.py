@@ -9,7 +9,7 @@ import plotly
 import plotly.graph_objs as go
 from plotly.subplots import make_subplots
 from django.forms import formset_factory
-from django.http import HttpResponseNotFound, HttpResponse, FileResponse
+from django.http import HttpResponseNotFound, HttpResponse, FileResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.views import View
 from xlsxwriter.utility import xl_col_to_name
@@ -205,8 +205,14 @@ class ThermalView(View):
 
 class ApiThermalMaterialElements(View):
 
-    def get(self, request):
-        return HttpResponseNotFound()
+    def get(self, request, material_chem_id):
+        get_mat_by_id = ChemistryThermal.objects.get(id=material_chem_id).__dict__
+
+        if '_state' in get_mat_by_id: del get_mat_by_id['_state']
+        if 'id' in get_mat_by_id: del get_mat_by_id['id']
+        if 'name' in get_mat_by_id: del get_mat_by_id['name']
+
+        return JsonResponse(get_mat_by_id, safe=False)
 
 
 class ApiThermalExportExcel(View):

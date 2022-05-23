@@ -229,6 +229,9 @@
                                         {% endfor %}
                                     </tr>
                                 {% endfor %}
+                                <tr style="display: none;">
+                                    <td colspan="4">Продолжение таблицы в выгрузке Excel</td>
+                                </tr>
                                 </tbody>
                             </table>
                         {% endif %}
@@ -237,7 +240,7 @@
                                 <thead>
                                 <th>Время, сек</th>
                                 <th>Температура, °C</th>
-                                <th>Скорость изменения температуры, °C / сек</th>
+                                <th>Скорость изменения<br>температуры, °C / сек</th>
                                 </thead>
                                 <tbody>
                                 {% for current_result in calculated_results %}
@@ -250,10 +253,12 @@
                                                     <td>{{ current_value|floatformat:2 }}</td>
                                                 {% endif %}
                                             {% endfor %}
-
                                         </tr>
                                     {% endfor %}
                                 {% endfor %}
+                                <tr style="display: none;">
+                                    <td colspan="4">Продолжение таблицы в выгрузке Excel</td>
+                                </tr>
                                 </tbody>
                             </table>
                         {% endif %}
