@@ -87,6 +87,8 @@ class ThermalView(View):
         graphJSON, graphJSON_2, result_dict, table_data, thickness_points = self.make_graphs(calculated_results,
                                                                                              number_of_zones, request,
                                                                                              thickness_text)
+        for item in result_dict.keys():
+            result_dict[f'{item}'] = self.equalizer(result_dict.get(f'{item}'))
 
         result_object = CalculatedResults.objects.create(created_at=timezone.now(),
                                                          expiration_date=timezone.now() + datetime.timedelta(days=1),
@@ -111,6 +113,18 @@ class ThermalView(View):
                                                          result_change_rate=result_dict.get('cooling_speed_y1'), )
 
         return calculated_results, graphJSON, graphJSON_2, number_of_zones, table_data, thickness_text, result_object
+
+    def equalizer(self, list_1):
+        largest_length = 0  # To define the largest length
+        for length in list_1:
+            if len(length) > largest_length:
+                largest_length = len(length)  # Will define the largest length in data.
+
+        for i, length in enumerate(list_1):
+            if len(length) < largest_length:
+                remainder = largest_length - len(length)  # Difference of length of particular list and largest length
+                list_1[i].extend([None for i in range(remainder)])  # Add None through the largest length limit
+        return list_1
 
     def make_graphs(self, calculated_results, number_of_zones, request, thickness_text):
         table_data = list()

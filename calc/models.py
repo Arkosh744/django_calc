@@ -82,9 +82,9 @@ class CalculatedResults(models.Model):
 
     result_zones = ArrayField(ArrayField(models.FloatField()), null=False)
 
-    result_time = ArrayField(ArrayField(models.FloatField()), size=2, null=False)
-    result_temperature = ArrayField(ArrayField(models.FloatField()), size=2, null=False)
-    result_change_rate = ArrayField(ArrayField(models.FloatField()), size=2, null=False)
+    result_time = ArrayField(ArrayField(models.FloatField()), null=False)
+    result_temperature = ArrayField(ArrayField(models.FloatField()), null=False)
+    result_change_rate = ArrayField(ArrayField(models.FloatField()), null=False)
 
 
 
