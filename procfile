@@ -1,0 +1,1 @@
+web: gunicorn djangoProject_calc.wsgi --log-file -

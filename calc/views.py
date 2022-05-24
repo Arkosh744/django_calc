@@ -220,7 +220,7 @@ class ThermalView(View):
 class ApiThermalMaterialElements(View):
 
     def get(self, request, material_chem_id):
-        get_mat_by_id = ChemistryThermal.objects.get(id=material_chem_id).__dict__
+        get_mat_by_id = get_object_or_404(ChemistryThermal, id=material_chem_id).__dict__
 
         if '_state' in get_mat_by_id: del get_mat_by_id['_state']
         if 'id' in get_mat_by_id: del get_mat_by_id['id']
@@ -274,13 +274,16 @@ class ApiThermalExportExcel(View):
         worksheet_1.write(10, 0, f'Шаг по времени, сек:')
         worksheet_1.write(10, 1, result_data.time_step)
         worksheet_1.write(12, 0, f'Зона:')
-        worksheet_1.write(13, 0, f'Время в зонах, сек')
-        worksheet_1.write(14, 0, f'Температура по зонам, °C')
-        worksheet_1.write(15, 0, f'Коэф. теплопередачи, Вт/м²К')
-        worksheet_1.write(16, 0, f'Температура поверхности, °C') if int(result_data.geometry) == 0 else None
-        worksheet_1.write(17, 0, f'Коэф. теплопередачи с поверхностью, Вт/м²К') if int(
+        worksheet_1.write(13, 0, f'Время нахождения по зонам, сек')
+        worksheet_1.write(14, 0, f'Температура окр. среды сверху, °C') if int(result_data.geometry) == 0 \
+            else worksheet_1.write(14, 0, f'Температура окр. среды, °C')
+        worksheet_1.write(15, 0, f'Коэф. теплопередачи сверху, Вт/м²К') if int(result_data.geometry) == 0 \
+            else worksheet_1.write(15, 0, f'Коэф. теплопередачи, Вт/м²К')
+        worksheet_1.write(16, 0, f'Температура окр. среды снизу, по зонам, °C') if int(result_data.geometry) == 0 else None
+        worksheet_1.write(17, 0, f'Коэф. теплопередачи снизу, Вт/м²К') if int(
             result_data.geometry) == 0 else None
-        worksheet_1.write(20, 0, f'Результаты расчетов на страницах 2 и 3')
+        worksheet_1.write(20, 0, f'Результаты расчетов представлены на страницах 2 и 3')
+
         worksheet_2.write(0, 0, f'Распределение температур по толщине')
         worksheet_2.write(1, 0, f'Толщина, мм') if int(result_data.geometry) == 0 \
             else worksheet_2.write(1, 0, f'Радиус, мм')
@@ -350,10 +353,11 @@ class ApiThermalExportExcel(View):
         chart_2.set_y_axis({'name': 'Толщина, мм'}) if int(result_data.geometry) == 0 else \
             chart_2.set_y_axis({'name': 'Радиус, мм'})
         chart_2.set_size({'width': 560, 'height': 360})
+
         chart_3.set_title({'name': 'Изменение температур во времени'})
         chart_3.set_x_axis({'name': 'Время, сек', })
         chart_3.set_y_axis({'name': 'Скорость изм. темп-ры, °C/сек'})
-        chart_3.set_y2_axis({'name': 'Температура, °C'})
+        chart_3.set_y2_axis({'name': 'Средняя температура, °C'})
         chart_3.set_size({'width': 880, 'height': 480})
         workbook.close()
         buffer.seek(0)

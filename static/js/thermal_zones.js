@@ -4,15 +4,19 @@ const material_select = document.getElementById("id_material_select");
 function geometry_select_change() {
     if ($('#id_geometry input:radio:checked').val() === '1') {
         $('.form-thickness label').text('Толщина, мм:')
+        $('#table-zones-time thead tr th:nth-child(3)').html('Температура окр. среды сверху, °C');
         $('#table-zones-time thead tr th:nth-child(4)').show();
         $('#table-zones-time tbody tr td:nth-child(4)').show()
+        $('#table-zones-coef thead tr th:nth-child(2)').html('Коэф. теплопередачи сверху, Вт/м²К');
         $('#table-zones-coef thead tr th:nth-child(3)').show()
         $('#table-zones-coef tbody tr td:nth-child(3)').show()
 
     } else {
         $('.form-thickness label').text('Радиус, мм:')
+        $('#table-zones-time thead tr th:nth-child(3)').html('Температура окр. среды, °C');
         $('#table-zones-time thead tr th:nth-child(4)').hide();
         $('#table-zones-time tbody tr td:nth-child(4)').hide()
+        $('#table-zones-coef thead tr th:nth-child(2)').html('Коэф. теплопередачи, Вт/м²К');
         $('#table-zones-coef thead tr th:nth-child(3)').hide()
         $('#table-zones-coef tbody tr td:nth-child(3)').hide()
     }

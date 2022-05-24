@@ -40,12 +40,12 @@ class ThermalForm(forms.Form):
 class ThermalZones(forms.Form):
     zone_time = forms.FloatField(label='Время в зоне, сек', min_value=0,
                                  initial=10, widget=forms.TextInput(attrs={'class': "form-control form-control-small"}))
-    zone_temp_air = forms.FloatField(label='Температура окр. среды, °C', min_value=0, initial=150,
+    zone_temp_air = forms.FloatField(label='Температура окр. среды сверху, °C', min_value=0, initial=150,
                                      widget=forms.TextInput(attrs={'class': "form-control form-control-small"}))
-    zone_thermal_coef = forms.FloatField(label='Коэф. теплопередачи, Вт/м²К', min_value=0, initial=1500,
+    zone_thermal_coef = forms.FloatField(label='Коэф. теплопередачи сверху, Вт/м²К', min_value=0, initial=1500,
                                          widget=forms.TextInput(attrs={'class': "form-control form-control-small"}))
 
-    zone_temp_bottom = forms.FloatField(label='Температура поверхности, °C', min_value=-73, initial=150,
+    zone_temp_bottom = forms.FloatField(label='Температура окр. среды снизу, °C', min_value=-73, initial=150,
                                         widget=forms.TextInput(attrs={'class': "form-control form-control-small"}))
     zone_thermal_coef_bottom = forms.FloatField(label='Коэф. теплопередачи снизу, Вт/м²К', min_value=0,
                                                 initial=1500,
