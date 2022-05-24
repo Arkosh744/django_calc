@@ -1,0 +1,44 @@
+body {
+    margin: 0 auto;
+}
+
+.div1 h3, .div2 h3 {
+    text-decoration: underline;
+    align-items: center;
+    align-self: center;
+    width: 80%;
+    text-align: center;
+    margin: 0 auto;
+    padding: 0.5rem;
+}
+
+.parent {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-content: flex-start;
+    align-items: flex-start;
+    margin: 0.5rem 1.5rem;
+}
+
+div .div1 {
+    border: 0.05rem solid rgba(0,0,0,.125);
+    padding: 0.7rem;
+    max-width: 20rem;
+    min-width: 19rem;
+    flex: 1 1 auto;
+    margin-bottom: 0.7rem;
+}
+
+div .div-results {
+    border: 0.05rem solid rgba(0,0,0,.125);
+}
+
+.parent .div-results {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-content: flex-start;
+    flex: 10 1 auto;
+    margin: 0 0.5rem;
+}

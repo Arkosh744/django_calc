@@ -1,0 +1,71 @@
+form {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    white-space: nowrap;
+    font-size: 0.8rem;
+}
+
+form .form-control-small {
+    font-size: 0.75rem;
+    min-height: calc(1em + 0.5rem + 2px);
+    padding: 0.1rem 0.8rem;
+    background-position: right 0.5rem center;
+}
+
+
+input {
+    box-sizing: border-box;
+}
+
+#id_geometry {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+form div {
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+details {
+    margin-bottom: 15px;
+}
+
+div .div-results .div2 {
+    min-width: 57%;
+}
+
+.div3 {
+    align-items: center;
+    padding: 5px 25px 5px 5px;
+}
+
+table {
+    text-align: center;
+    margin: 5px auto;
+    width: 100%;
+    font-size: 0.75rem;
+}
+
+.table-zones td input {
+    text-align: center;
+}
+
+.td-zone, th {
+    word-wrap: break-word;
+    max-width: 100%;
+    white-space: break-spaces;
+    padding: 3px;
+    font-size: 0.65rem;
+}
+
+.table-sm th {
+    word-wrap: break-word;
+    font-size: 11px;
+}
+
+.table-sm td {
+    font-size: 12px;
+}
