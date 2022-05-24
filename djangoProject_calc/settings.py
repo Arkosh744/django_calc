@@ -27,8 +27,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env.str("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com/']
+DEBUG = True
+ALLOWED_HOSTS = ['127.0.0.1', 'calc-sever-django.herokuapp.com']
 # Application definition
 
 
@@ -92,6 +92,7 @@ DATABASES = {
         'CONN_MAX_AGE': 500
     }
 }
+WHITENOISE_USE_FINDERS = True
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -123,7 +124,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-WHITENOISE_USE_FINDERS = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
