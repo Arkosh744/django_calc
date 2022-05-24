@@ -1,1 +1,0 @@
-web: gunicorn djangoProject_calc.wsgi --log-file -b 0.0.0.0:8000
