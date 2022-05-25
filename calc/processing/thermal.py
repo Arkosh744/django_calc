@@ -62,7 +62,7 @@ def value_prop(T: float, material_data: ThermalProps):
     return dens, cond, cp
 
 
-def iteration(tau, current_zone_time, temp, prepared_data, h, r_pos, r_posn, r_posp, current_zone, result_list):
+def iteration(tau, current_zone_time, temp: list, prepared_data, h, r_pos, r_posn, r_posp, current_zone, result_list):
     """Функция итерирует, на вход шаг по времени, общее время, температура по ячейкам, материал, коэффициент формы,
     размер ячейки, координаты, координаты со сдвигом минус, координаты со сдвигом плюс, коэффициент теплоотдачи и
     температура снаружи, коэффициент теплоотдачи и температуры внутри """
@@ -127,7 +127,7 @@ def iteration(tau, current_zone_time, temp, prepared_data, h, r_pos, r_posn, r_p
                                conduct[-1] * h ** 2 + multi_a * (h * k2 + conduct[-1] * (1 - alpha[-2])))
 
             for i in range(point_layers - 2, -1, -1):
-                temp[i] = alpha[i] * temp[i + 1] + beta[i]
+                temp[i] = round(alpha[i] * temp[i + 1] + beta[i], 2)
 
             delta = max([abs(temp[i] - temp_s[i]) for i in range(0, point_layers)]) / max(temp)
         temp_medium1 = temp[0] * (r_posp[0]) ** (form + 1) + temp[-1] * \

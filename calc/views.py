@@ -3,6 +3,8 @@ import csv
 import json
 import datetime
 import io
+import math
+
 import xlsxwriter
 
 import plotly
@@ -41,6 +43,14 @@ class ThermalView(View):
 
         calculated_results, graphJSON, graphJSON_2, number_of_zones, table_data, thickness_text, result_object = \
             self.valid_data_processing(formset, request)
+        print(len(table_data))
+        print(math.floor(len(table_data)/10))
+        if len(table_data) > 9:
+            t_data_minus = table_data[-1:]
+            step = math.floor(len(table_data)/(len(table_data)/9))
+            print(f'{step=}')
+            table_data = table_data[::step]
+            print(table_data)
 
         return render(request, 'calc/thermal.html',
                       context={'html_forms': self.html_forms,

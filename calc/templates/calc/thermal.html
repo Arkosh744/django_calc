@@ -4,7 +4,7 @@
 
 
 {% block header %}
-    <title>Калькулятор вальцовки</title>
+    <title>Тепловые расчеты</title>
     <link rel="stylesheet" href="{% static 'css/style_page.css' %}">
     <link rel="stylesheet" href="{% static 'css/style_thermal.css' %}">
 {% endblock %}
@@ -229,9 +229,9 @@
                                         {% endfor %}
                                     </tr>
                                 {% endfor %}
-                                <tr style="display: none;">
-                                    <td colspan="9">Продолжение таблицы в выгрузке Excel</td>
-                                </tr>
+{#                                <tr>#}
+{#                                    <td colspan="9">Полная таблица в выгрузке Excel</td>#}
+{#                                </tr>#}
                                 </tbody>
                             </table>
                         {% endif %}
@@ -256,8 +256,8 @@
                                         </tr>
                                     {% endfor %}
                                 {% endfor %}
-                                <tr style="display: none;">
-                                    <td colspan="3">Продолжение таблицы в выгрузке Excel</td>
+                                <tr>
+                                    <td colspan="3">Полная таблица в выгрузке Excel</td>
                                 </tr>
                                 </tbody>
                             </table>
