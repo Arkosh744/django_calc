@@ -1,1 +1,1 @@
-web: gunicorn djangoProject_calc.wsgi -b "0.0.0.0:0000"
+web: gunicorn djangoProject_calc.wsgi
