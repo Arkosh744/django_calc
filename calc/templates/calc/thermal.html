@@ -229,32 +229,26 @@
                                         {% endfor %}
                                     </tr>
                                 {% endfor %}
-{#                                <tr>#}
-{#                                    <td colspan="9">Полная таблица в выгрузке Excel</td>#}
-{#                                </tr>#}
+                                {#                                <tr>#}
+                                {#                                    <td colspan="9">Полная таблица в выгрузке Excel</td>#}
+                                {#                                </tr>#}
                                 </tbody>
                             </table>
                         {% endif %}
                         {% if table_data %}
                             <table class="table table-sm" id="resultData_temp_change">
                                 <thead>
-                                    <th>Время, сек</th>
-                                    <th>Средняя температура, °C</th>
-                                    <th>Скорость изменения<br>температуры, °C / сек</th>
+                                <th>Время, сек</th>
+                                <th>Средняя температура, °C</th>
+                                <th>Скорость изменения<br>температуры, °C / сек</th>
                                 </thead>
                                 <tbody>
-                                {% for current_result in calculated_results %}
-                                    {% for current_value_list in current_result %}
-                                        <tr>
-                                            {% for current_value in current_value_list %}
-                                                {% if forloop.last %}
-                                                    <td>{{ current_value|floatformat:2 }}</td>
-                                                {% else %}
-                                                    <td>{{ current_value|floatformat:2 }}</td>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </tr>
-                                    {% endfor %}
+                                {% for row in table_2_data %}
+                                    <tr>
+                                        {% for value in row %}
+                                            <td>{{ value }}</td>
+                                        {% endfor %}
+                                    </tr>
                                 {% endfor %}
                                 <tr>
                                     <td colspan="3">Полная таблица в выгрузке Excel</td>

@@ -127,7 +127,7 @@ def iteration(tau, current_zone_time, temp: list, prepared_data, h, r_pos, r_pos
                                conduct[-1] * h ** 2 + multi_a * (h * k2 + conduct[-1] * (1 - alpha[-2])))
 
             for i in range(point_layers - 2, -1, -1):
-                temp[i] = round(alpha[i] * temp[i + 1] + beta[i], 2)
+                temp[i] = alpha[i] * temp[i + 1] + beta[i]
 
             delta = max([abs(temp[i] - temp_s[i]) for i in range(0, point_layers)]) / max(temp)
         temp_medium1 = temp[0] * (r_posp[0]) ** (form + 1) + temp[-1] * \

@@ -1,4 +1,5 @@
 # Create your views here.
+import copy
 import csv
 import json
 import datetime
@@ -41,24 +42,51 @@ class ThermalView(View):
             return render(request, 'calc/thermal.html',
                           context={'html_forms': self.html_forms, 'zones_formset': formset})
 
-        calculated_results, graphJSON, graphJSON_2, number_of_zones, table_data, thickness_text, result_object = \
+        result_dict_data_2, graphJSON, graphJSON_2, number_of_zones, table_data, thickness_text, result_object = \
             self.valid_data_processing(formset, request)
-        if len(table_data) > 9:
-            t_data_minus = table_data[-1:]
-            step = math.floor(len(table_data)/(len(table_data)/9))
-            table_data = table_data[::step]
+
+        table_data = self.squish_table(table_data)
+        table_2_data = self.table_2_prepare_data(result_dict_data_2)
 
         return render(request, 'calc/thermal.html',
                       context={'html_forms': self.html_forms,
                                'number_of_zones': range(1, number_of_zones + 1),  # Для генерации таблицы результатов
                                'zones_formset': formset,
-                               'calculated_results': calculated_results['result_list'],
+                               'table_2_data': table_2_data,
                                'table_data': table_data, 'geometry_forms': int(request.POST.get('geometry')),
                                'plot': graphJSON,
                                'plot_2': graphJSON_2,
                                'thickness_text': thickness_text,
                                'result_object': result_object,
                                })
+
+    def table_2_prepare_data(self, result_dict):
+        table_2 = {'table2_time': list(), 'table2_temp': list(), 'table2_speed': list()}
+        table_2_data = list()
+        for i in range(len(result_dict['time_x1'])):
+            table_2['table2_time'] += result_dict['time_x1'][i]
+            table_2['table2_temp'] += result_dict['cooling_speed_y1'][i]
+            table_2['table2_speed'] += result_dict['temp_time_y2'][i]
+        if len(table_2['table2_time']) > 9:
+            table_2['table2_time'] = self.squish_table(table_2['table2_time'])
+        if len(table_2['table2_temp']) > 9:
+            table_2['table2_temp'] = self.squish_table(table_2['table2_temp'])
+        if len(table_2['table2_speed']) > 9:
+            table_2['table2_speed'] = self.squish_table(table_2['table2_speed'])
+        for i in range(len(table_2['table2_time'])):
+            table_2_data += [[table_2['table2_time'][i], table_2['table2_temp'][i], table_2['table2_speed'][i]]]
+        return table_2_data
+
+    def squish_table(self, table_data):
+        step = (len(table_data) / 9)
+        current_step = 0
+        new_table_data = list()
+        while current_step < len(table_data):
+            new_table_data += [table_data[math.floor(current_step)]]
+            current_step += step
+        new_table_data += [table_data[-1]] if new_table_data[-1] != table_data[-1] else []
+        table_data = new_table_data[:]
+        return table_data
 
     def valid_data_processing(self, formset, request):
         number_of_zones = int(self.html_forms.cleaned_data.get('number_of_zones'))
@@ -93,9 +121,10 @@ class ThermalView(View):
         graphJSON, graphJSON_2, result_dict, table_data, thickness_points = self.make_graphs(calculated_results,
                                                                                              number_of_zones, request,
                                                                                              thickness_text)
+        result_dict_data_2 = copy.deepcopy(result_dict)
+
         for item in result_dict.keys():
             result_dict[f'{item}'] = self.equalizer(result_dict.get(f'{item}'))
-
         result_object = CalculatedResults.objects.create(created_at=timezone.now(),
                                                          expiration_date=timezone.now() + datetime.timedelta(days=1),
                                                          steel_grade_name=get_mat_name.name,
@@ -118,7 +147,7 @@ class ThermalView(View):
                                                          result_temperature=result_dict.get('temp_time_y2'),
                                                          result_change_rate=result_dict.get('cooling_speed_y1'), )
 
-        return calculated_results, graphJSON, graphJSON_2, number_of_zones, table_data, thickness_text, result_object
+        return result_dict_data_2, graphJSON, graphJSON_2, number_of_zones, table_data, thickness_text, result_object
 
     def equalizer(self, list_1):
         largest_length = 0  # To define the largest length
@@ -157,7 +186,8 @@ class ThermalView(View):
         fig.update_xaxes(
             title_text="Температура, °C",
             title_font={"size": 14},
-            title_standoff=8)
+            title_standoff=8,
+            tickformat=".1f")
         fig.update_yaxes(
             title_text=thickness_text,
             title_font={"size": 14},
@@ -285,7 +315,8 @@ class ApiThermalExportExcel(View):
             else worksheet_1.write(14, 0, f'Температура окр. среды, °C')
         worksheet_1.write(15, 0, f'Коэф. теплопередачи сверху, Вт/м²К') if int(result_data.geometry) == 0 \
             else worksheet_1.write(15, 0, f'Коэф. теплопередачи, Вт/м²К')
-        worksheet_1.write(16, 0, f'Температура окр. среды снизу, по зонам, °C') if int(result_data.geometry) == 0 else None
+        worksheet_1.write(16, 0, f'Температура окр. среды снизу, по зонам, °C') if int(
+            result_data.geometry) == 0 else None
         worksheet_1.write(17, 0, f'Коэф. теплопередачи снизу, Вт/м²К') if int(
             result_data.geometry) == 0 else None
         worksheet_1.write(20, 0, f'Результаты расчетов представлены на страницах 2 и 3')
