@@ -17,6 +17,29 @@
                 <form action="{% url 'thermal' %}" method="post" autocomplete="off" id="submit-form">
                     {% csrf_token %}
                     {{ zones_formset.management_form }}
+
+                    {% if html_forms.errors %}
+                        {% for field in html_forms %}
+                            {% if field.errors %}
+                                <div class="alert alert-danger {{ field.name }}">
+                                    <strong>{{ field.label |escape }} {{ field.errors }}</strong>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if zones_formset.errors %}
+                        {% for field in zones_formset %}
+                                {% for zone in field %}
+                                    {% if zone.errors %}
+                                    <div class="alert alert-danger">
+                                        <strong>{{ zone.label |escape }} {{ zone.errors }}</strong>
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+
                     {{ html_forms.material_select.label }}
                     {{ html_forms.material_select }}
                     <details style="padding-top: 6px">
