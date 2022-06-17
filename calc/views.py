@@ -65,8 +65,8 @@ class ThermalView(View):
         table_2_data = list()
         for i in range(len(result_dict['time_x1'])):
             table_2['table2_time'] += result_dict['time_x1'][i]
-            table_2['table2_temp'] += result_dict['temp_time_y2'][i]
-            table_2['table2_speed'] += result_dict['cooling_speed_y1'][i]
+            table_2['table2_temp'] += result_dict['cooling_speed_y1'][i]
+            table_2['table2_speed'] += result_dict['temp_time_y2'][i]
         if len(table_2['table2_time']) > 9:
             table_2['table2_time'] = self.squish_table(table_2['table2_time'])
         if len(table_2['table2_temp']) > 9:
@@ -74,11 +74,11 @@ class ThermalView(View):
         if len(table_2['table2_speed']) > 9:
             table_2['table2_speed'] = self.squish_table(table_2['table2_speed'])
         for i in range(len(table_2['table2_time'])):
-            table_2_data += [[table_2['table2_time'][i], table_2['table2_temp'][i], table_2['table2_speed'][i]]]
+            table_2_data += [[table_2['table2_time'][i], table_2['table2_speed'][i], table_2['table2_temp'][i]]]
         return table_2_data
 
     def squish_table(self, table_data):
-        step = round((len(table_data) / 9), 1)
+        step = (len(table_data) / 9)
         current_step = 0
         new_table_data = list()
         while current_step < len(table_data):
