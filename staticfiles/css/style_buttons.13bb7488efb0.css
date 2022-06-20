@@ -1,0 +1,126 @@
+.btn-portal-link, .btn-cards-link, .btn-cards-excel {
+    border: none;
+    color: white;
+    padding: 4px 14px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 20px;
+}
+
+
+.btn-portal-link {
+    background-color: rgb(16, 124, 65);
+}
+
+.btn-flag {
+    width: 25px;
+    height: 20px;
+    border: #f4f4f4 1px solid;
+    border-radius: 4px;
+    margin: 5px;
+}
+
+.btn-flag-img {
+    width: 25px;
+    height: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 4px;
+}
+
+.btn-logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 170px;
+    height: 40px;
+}
+
+.btn-cards-link {
+    background-color: #3763f4;
+}
+
+
+.btn-portal-link:link, .btn-portal-link:visited,
+.btn-portal-link:hover, .btn-portal-link:active,
+.btn-cards-link:link, .btn-cards-link:visited,
+.btn-cards-link:hover, .btn-cards-link:active {
+    color: white;
+}
+
+.engi-portal-footer {
+    margin: auto;
+    text-align: center;
+}
+
+.btn-portal {
+    font-size: 10px;
+    border-radius: 20px;
+    height: 30px;
+}
+
+.btn-calc {
+    width: 80%;
+}
+
+.btn-save {
+    display: inline-block;
+    width: 35%;
+    height: 30px;
+    padding: 4px;
+}
+
+.btn-spoiler {
+    align-self: center;
+}
+
+.btn-spoiler-results {
+    padding-top: 25px;
+}
+
+.btn-results {
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.open-menu {
+    position: fixed;
+    top: 20px;
+    left: 10px;
+    z-index: 997;
+    box-shadow: 3px 3px 3px rgba(51, 51, 51, 0.2);
+}
+
+.open-menu.btn-customized,
+.open-menu.btn-customized:hover,
+.open-menu.btn-customized:active,
+.open-menu.btn-customized:focus,
+.open-menu.btn-customized:active:focus,
+.open-menu.btn-customized.active:focus,
+.open-menu.btn-customized.btn.btn-primary:not(:disabled):not(.disabled):active,
+.open-menu.btn-customized.btn.btn-primary:not(:disabled):not(.disabled):active:focus {
+    box-shadow: 3px 3px 3px rgba(51, 51, 51, 0.2);
+}
+
+/* Style for all buttons with the class btn-customized */
+
+a.btn-customized:hover,
+a.btn-customized:active,
+a.btn-customized:focus,
+a.btn-customized:active:focus,
+a.btn-customized.active:focus,
+a.btn-customized.btn.btn-primary:not(:disabled):not(.disabled):active,
+a.btn-customized.btn.btn-primary:not(:disabled):not(.disabled):active:focus {
+    outline: 0;
+    background: #cd533d; /* for browsers that don't recognize rgba */
+    background: rgba(243, 91, 63, 0.7);
+    border: 0;
+    color: #fff;
+    box-shadow: none;
+}
