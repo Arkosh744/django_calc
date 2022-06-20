@@ -2,6 +2,7 @@
 ____
 Если менялись статик файлы, то перед коммитами сделать
 - python manage.py collectstatic
+- python manage.py collectstatic --noinput
 ____
 Коммиты на хироку
 - git add -A .

@@ -10,117 +10,184 @@
 
     {% endblock %}
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style_buttons.css' %}">
     <link rel="stylesheet" href="{% static 'css/loader.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/script.min.js' %}"></script>
-    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/plotly.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/ajax_libs_d3_3.5.6_d3.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/menu_button.js' %}"></script>
+
 </head>
 
-<body class="d-flex flex-column min-vh-100" style="background-position: 0 -60px;">
-<nav class="navbar navbar-light navbar-expand-md fixed-top navbar-shrink py-3" id="mainNav">
-    <div class="container" style="max-width: 1740px;">
-        <a class="navbar-brand d-flex align-items-center" href="/"><span style="text-align: center;"><img
-                src="{% static 'img/Severstal_Unity_Blue_RGB.png' %}"
-                style="width: 27px;height: 27px;margin-right: 8px;margin-bottom: 6px;">Калькуляторы</span></a>
-        <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span
-                class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navcol-1" style="width: 635.578px;">
-            <ul class="navbar-nav mx-auto">
-                <li class="nav-item" style="text-align: center;"><a class="nav-link" href="{% url 'thermal' %}"
-                                                                    style="text-align: center;">Тепловые расчеты</a>
-                </li>
-                <li class="nav-item" style="text-align: center;"><a class="nav-link"
-                                                                    style="text-align: center;">Бочки</a></li>
-                <li class="nav-item" style="text-align: center;"><a class="nav-link"
-                                                                    style="text-align: center;">Вальцовка</a></li>
-            </ul>
-            <a href="#"><img src="../static/img/English_language.svg"
-                             style="width: 25px;height: 20px;margin-right: 6px;border-radius: 6px;"></a><a href="#"><img
-                src="../static/img/Flag_of_Russia.svg"
-                style="width: 25px;height: 20px;margin-right: 6px;border-radius: 6px;"></a><img
-                src="../static/img/severstal-logo-blue.svg" style="margin-left: -20px;margin-bottom: 10px;">
+<body class="d-flex flex-column min-vh-100">
+<div class="wrapper">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <!-- close sidebar menu -->
+        <div class="dismiss">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#101010"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.00006 18L18.728 5.27208" stroke-width="2" stroke-linecap="round"></path>
+                <path d="M6 5L18.7279 17.7279" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
         </div>
-    </div>
-</nav>
-<header class="bg-primary-gradient pt-5" style="height: 80px;"></header>
 
-{% block content %} {% endblock %}
+        <div class="logo">
+            <h3><a href="{% url 'index' %}">Инжиниринговый портал</a></h3>
+        </div>
 
-<footer class="bg-primary-gradient" style="font-size: 75%">
-    <div class="container py-4" style="max-width: 1800px;">
-        <div class="row justify-content-center">
-            <div class="col-lg-3 col-md-12 col-lg-9 offset-md-0 offset-lg-0 text-center text-lg-start d-flex flex-column item">
-                <ul class="list-unstyled"></ul>
-                <h3>Инжиниринговый портал</h3>
-                <p>Еще больше данных о физических свойствах продукции ПАО «Северсталь»<br>Бесплатный уникальный контент
-                    на основе наших собственных исследований<br></p>
-                <div style="height: 40px">
-                    <a href="https://vmeste.severstal.com/engineering-portal/catalog-cards/#catalog_cards"
-                       class="btn-cards-link" target="_blank">{{ _("Каталог карточек") }}</a>
-                    <a href="https://vmeste.severstal.com/engineering-portal/?popup-auth=tab-2#popup-auth"
-                       class="btn-portal-link" target="_blank">{{ _("Получить доступ") }}</a>
-                    {#                    <button class="btn btn-primary" type="button" style="margin-right: 10px;">Каталог карточек</button>#}
-                    {#                    <button class="btn btn-primary" type="button">Получить доступ</button>#}
+        <ul class="list-unstyled menu-elements">
+            <li>
+                <a class="scroll-link" href="{% url 'thermal' %}"><i class="fas fa-cog"></i>Тепловые расчеты</a>
+            </li>
+            <li>
+                <a class="scroll-link" href="{% url 'barrel' %}"><i class="fas fa-user"></i>Рачеты бочек</a>
+            </li>
+            <li>
+                <a class="scroll-link" href="{% url 'forming' %}"><i class="fas fa-pencil-alt"></i>Расчет вальцовки</a>
+            </li>
+        </ul>
+    </nav>
+    <!-- End sidebar -->
+
+    <!-- Dark overlay -->
+    <div class="overlay"></div>
+
+    <div class="content">
+        <div class="navbar navbar-light navbar-expand-md navbar-shrink py-3" id="mainNav">
+            <div class="container header-bar">
+
+                <div class="header-bar-menu">
+                    <a class="btn btn-customized open-menu" href="#" role="button">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2 12H22" stroke="#101010" stroke-width="1.8" stroke-linecap="round"
+                                  stroke-linejoin="round"></path>
+                            <path d="M2 17H16" stroke="#101010" stroke-width="1.8" stroke-linecap="round"
+                                  stroke-linejoin="round"></path>
+                            <path d="M2 7H22" stroke="#101010" stroke-width="1.8" stroke-linecap="round"
+                                  stroke-linejoin="round"></path>
+                        </svg>
+                    </a>
+                    <a href="https://vmeste.severstal.com/engineering-portal/" class="link link-to-portal">
+                        <svg width="82" height="16" viewBox="0 0 82 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 0H7.75923C10.8268 0 12.6915 1.50373 12.6915 4.02999C12.6915 5.65402 11.7892 6.857 10.1652 7.57879C12.09 8.12013 13.293 9.50356 13.293 11.3682C13.293 14.0749 11.308 15.6989 7.93968 15.6989H0V0ZM3.48865 2.70671V6.43595H7.15774C8.48102 6.43595 9.32311 5.71416 9.32311 4.57133C9.32311 3.36835 8.54117 2.70671 7.15774 2.70671H3.48865ZM3.48865 9.14266V12.9922H7.39834C8.90207 12.9922 9.68401 12.3306 9.68401 11.1276C9.68401 9.86445 8.78177 9.14266 7.39834 9.14266H3.48865Z"
+                                  fill="#002F6E"></path>
+                            <path d="M15.2173 15.6996V3.4292H19.0668L22.6758 10.8877L26.1644 3.4292H30.014V15.7598H27.0667V7.45919L24.1795 13.6545H21.2322L18.2247 7.51934V15.7598H15.2173V15.6996Z"
+                                  fill="#002F6E"></path>
+                            <path d="M31.9375 9.56379C31.9375 5.83455 34.3435 3.18799 38.3133 3.18799C41.8621 3.18799 44.3884 5.47365 44.3884 9.0826C44.3884 9.56379 44.3282 9.98484 44.2681 10.4059H35.1856C35.4261 12.2705 36.4487 13.4133 38.3133 13.4133C39.9373 13.4133 40.8396 12.7517 41.2005 11.5487L44.2681 12.0901C43.6064 14.496 41.802 15.9997 38.3133 15.9997C34.4036 15.9396 31.9375 13.4133 31.9375 9.56379ZM35.2457 8.30066H41.2606C41.0802 6.61649 39.9373 5.7744 38.3133 5.7744C36.6291 5.7744 35.5464 6.67664 35.2457 8.30066Z"
+                                  fill="#002F6E"></path>
+                            <path d="M54.3136 8.30066C54.073 6.73679 53.1708 5.8947 51.7272 5.8947C49.8626 5.8947 48.9002 7.21798 48.9002 9.56379C48.9002 11.9096 49.8626 13.2329 51.7272 13.2329C53.2309 13.2329 54.1332 12.451 54.4339 10.7066L57.5616 11.248C57.0203 14.2554 54.9151 15.9396 51.7272 15.9396C47.8175 15.9396 45.4717 13.4735 45.4717 9.56379C45.4717 5.6541 47.8776 3.18799 51.7272 3.18799C54.9752 3.18799 56.9602 4.81201 57.5616 7.81947L54.3136 8.30066Z"
+                                  fill="#002F6E"></path>
+                            <path d="M61.5322 6.07585H57.6826V3.36914H68.6899V6.07585H64.8404V15.6997H61.5322V6.07585Z"
+                                  fill="#002F6E"></path>
+                            <path d="M69.1714 9.56379C69.1714 5.83455 71.5773 3.18799 75.5472 3.18799C79.096 3.18799 81.6222 5.47365 81.6222 9.0826C81.6222 9.56379 81.5621 9.98484 81.502 10.4059H72.4194C72.66 12.2705 73.6826 13.4133 75.5472 13.4133C77.1712 13.4133 78.0734 12.7517 78.4343 11.5487L81.502 12.0901C80.8403 14.496 79.0358 15.9997 75.5472 15.9997C71.6976 15.9396 69.1714 13.4133 69.1714 9.56379ZM72.5397 8.30066H78.5546C78.3742 6.61649 77.2314 5.7744 75.6073 5.7744C73.9232 5.7744 72.8405 6.67664 72.5397 8.30066Z"
+                                  fill="#002F6E"></path>
+                        </svg>
+                        <div class="fw-bold text-muted">
+                            <span>Инжиниринговый <br>портал</span>
+                        </div>
+                    </a>
+                    <a href="{% url 'index' %}" class="link">
+                        <div class="">
+                            <a href="{% url 'index' %}" class="link">
+                                <span>Калькуляторы</span>
+                            </a>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="header-bar-logo">
+                    <a href="#"><img src="../static/img/English_language.svg"
+                                     style="width: 25px;height: 20px;margin-right: 6px;border-radius: 6px;"></a>
+                    <a href="#"><img src="../static/img/Flag_of_Russia.svg"
+                                     style="width: 25px;height: 20px;margin-right: 6px;border-radius: 6px;"></a>
+                    <a href="{% url 'index' %}">
+                        <img src="../static/img/severstal-logo-blue.svg" alt="Северсталь" style="margin-bottom: 8px;">
+                    </a>
                 </div>
             </div>
-            <div class="col-lg-3 text-center text-lg-start d-flex flex-column align-items-center order-first align-items-lg-start order-lg-last item social">
-                <img src="../static/img/severstal-logo-blue.svg" style="margin-left: auto; display: block;">
-                <p class="text-muted copyright"></p>
+        </div>
+
+        {% block content %} {% endblock %}
+
+        <footer class="bg-primary-gradient" style="font-size: 75%">
+            <div class="container py-4" style="max-width: 1800px;">
+                <div class="row justify-content-center">
+                    <div class="col-lg-3 col-md-12 col-lg-9 offset-md-0 offset-lg-0 text-center text-lg-start d-flex flex-column item">
+                        <ul class="list-unstyled"></ul>
+                        <h3>Инжиниринговый портал</h3>
+                        <p>Еще больше данных о физических свойствах продукции ПАО «Северсталь»<br>Бесплатный уникальный
+                            контент
+                            на основе наших собственных исследований<br></p>
+                        <div style="height: 40px">
+                            <a href="https://vmeste.severstal.com/engineering-portal/catalog-cards/#catalog_cards"
+                               class="btn-cards-link" target="_blank">{{ _("Каталог карточек") }}</a>
+                            <a href="https://vmeste.severstal.com/engineering-portal/?popup-auth=tab-2#popup-auth"
+                               class="btn-portal-link" target="_blank">{{ _("Получить доступ") }}</a>
+                            {#                    <button class="btn btn-primary" type="button" style="margin-right: 10px;">Каталог карточек</button>#}
+                            {#                    <button class="btn btn-primary" type="button">Получить доступ</button>#}
+                        </div>
+                    </div>
+                    <div class="col-lg-3 text-center text-lg-start d-flex flex-column align-items-center order-first align-items-lg-start order-lg-last item social">
+                        <img src="../static/img/severstal-logo-blue.svg" style="margin-left: auto; display: block;">
+                        <p class="text-muted copyright"></p>
+                    </div>
+                </div>
+                <hr>
+                <p>При возникновении любых вопросов и предложений, связанных с работой веб-приложений, обращайтесь по
+                    почте
+                    <a
+                            href="mailto:engineering@severstal.com">engineering@severstal.com</a><br>
+                    Данные являются справочными, Северсталь не несет ответственности за возможные последствия
+                    использования
+                    данных.</p>
+                <div class="text-muted d-flex justify-content-between align-items-center pt-3">
+                    <p class="mb-0">Copyright © 2021-2022 Северсталь</p>
+                    {#            <ul class="list-inline mb-0">#}
+                    {#                <li class="list-inline-item">#}
+                    {#                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"#}
+                    {#                         viewBox="0 0 16 16" class="bi bi-facebook">#}
+                    {#                        <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"></path>#}
+                    {#                    </svg>#}
+                    {#                </li>#}
+                    {#                <li class="list-inline-item">#}
+                    {#                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"#}
+                    {#                         viewBox="0 0 16 16" class="bi bi-twitter">#}
+                    {#                        <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"></path>#}
+                    {#                    </svg>#}
+                    {#                </li>#}
+                    {#                <li class="list-inline-item">#}
+                    {#                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"#}
+                    {#                         viewBox="0 0 16 16" class="bi bi-instagram">#}
+                    {#                        <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>#}
+                    {#                    </svg>#}
+                    {#                </li>#}
+                    {#            </ul>#}
+                </div>
             </div>
+        </footer>
+
+        <!-- Loading CSS wrapper -->
+        <div class="loader-wrapper loader-flex">
+            <span class="loader"><span class="loader-inner"></span></span>
         </div>
-        <hr>
-        <p>При возникновении любых вопросов и предложений, связанных с работой веб-приложений, обращайтесь по почте <a
-                href="mailto:engineering@severstal.com">engineering@severstal.com</a><br>
-            Данные являются справочными, Северсталь не несет ответственности за возможные последствия использования
-            данных.</p>
-        <div class="text-muted d-flex justify-content-between align-items-center pt-3">
-            <p class="mb-0">Copyright © 2021-2022 Северсталь</p>
-            {#            <ul class="list-inline mb-0">#}
-            {#                <li class="list-inline-item">#}
-            {#                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"#}
-            {#                         viewBox="0 0 16 16" class="bi bi-facebook">#}
-            {#                        <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"></path>#}
-            {#                    </svg>#}
-            {#                </li>#}
-            {#                <li class="list-inline-item">#}
-            {#                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"#}
-            {#                         viewBox="0 0 16 16" class="bi bi-twitter">#}
-            {#                        <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"></path>#}
-            {#                    </svg>#}
-            {#                </li>#}
-            {#                <li class="list-inline-item">#}
-            {#                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"#}
-            {#                         viewBox="0 0 16 16" class="bi bi-instagram">#}
-            {#                        <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>#}
-            {#                    </svg>#}
-            {#                </li>#}
-            {#            </ul>#}
-        </div>
+
+        <script>
+            $(".loader-wrapper").hide();
+            document.querySelector("#submit-form").onsubmit = function () {
+                $('html,body').scrollTop(0);
+                $("#content").hide();
+                $(".container").hide();
+                $(".loader-wrapper").show();
+            }
+        </script>
+        <!-- Loaded CSS wrapper -->
+
+        {% block additional_js %} {% endblock %}
     </div>
-</footer>
-
-<!-- Loading CSS -->
-<div class="loader-wrapper loader-flex">
-    <span class="loader"><span class="loader-inner"></span></span>
 </div>
-
-<script>
-    $(".loader-wrapper").hide();
-    document.querySelector("#submit-form").onsubmit = function () {
-        $('html,body').scrollTop(0);
-        $("#content").hide();
-        $(".container").hide();
-        $(".loader-wrapper").show();
-    }
-</script>
-<!-- Loaded CSS -->
-
-{% block additional_js %} {% endblock %}
 
 </body>
 

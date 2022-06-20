@@ -88,3 +88,29 @@
     left: 50%;
     transform: translate(-50%, 0);
 }
+
+/* Style for all buttons with the class btn-customized */
+
+a.btn-customized {
+    margin-right: 16px;
+    padding: .9rem 0.15rem .9rem .95rem;
+    background: #f4f4f4;
+    border: 0;
+    border-radius: 0;
+    color: #fff;
+}
+
+a.btn-customized:hover,
+a.btn-customized:active,
+a.btn-customized:focus,
+a.btn-customized:active:focus,
+a.btn-customized.active:focus,
+a.btn-customized.btn.btn-primary:not(:disabled):not(.disabled):active,
+a.btn-customized.btn.btn-primary:not(:disabled):not(.disabled):active:focus {
+    outline: 0;
+    background: #F4F4F4B2; /* for browsers that don't recognize rgba */
+    background: rgba(244, 244, 244, 0.7);
+    border: 0;
+    color: #fff;
+    box-shadow: none;
+}
