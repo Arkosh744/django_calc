@@ -59,6 +59,7 @@ table {
     white-space: break-spaces;
     padding: 3px;
     font-size: 0.65rem;
+    font-weight: 500;
 }
 
 .table-sm th {

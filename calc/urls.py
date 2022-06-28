@@ -10,4 +10,5 @@ urlpatterns = [
     path('thermal', ThermalView.as_view(), name='thermal'),
     path('barrel', views.barrel, name='barrel'),
     path('forming', views.forming, name='forming'),
+    path('wear-resistance', views.forming, name='wear-resistance'),
 ]

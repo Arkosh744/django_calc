@@ -91,13 +91,14 @@
 
 /* Style for all buttons with the class btn-customized */
 
-a.btn-customized {
+.btn-customized {
     margin-right: 16px;
-    padding: .9rem 0.15rem .9rem .95rem;
+    padding-left: 18px;
     background: #f4f4f4;
     border: 0;
     border-radius: 0;
     color: #fff;
+    z-index: 999;
 }
 
 a.btn-customized:hover,

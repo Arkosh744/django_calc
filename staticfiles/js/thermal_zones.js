@@ -1,6 +1,8 @@
 const zones_select = document.getElementById("id_number_of_zones");
 const material_select = document.getElementById("id_material_select");
 
+// document.getElementsByClassName("overlay")[0].className
+
 function geometry_select_change() {
     if ($('#id_geometry input:radio:checked').val() === '1') {
         $('.form-thickness label').text('Толщина, мм:')
