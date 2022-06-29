@@ -26,19 +26,40 @@
     <!-- Sidebar -->
     <nav class="sidebar">
         <div class="logo col-md-8 mx-auto">
-            <h3><a href="{% url 'index' %}">Инжиниринговый портал</a></h3>
+            <h3><a href="{% url 'index' %}">Калькуляторы для инженеров</a></h3>
         </div>
 
         <ul class="list-unstyled menu-elements col-md-8 mx-auto">
             <li>
-                <a class="scroll-link" href="{% url 'thermal' %}"><i class="fas fa-cog"></i>Тепловые расчеты</a>
+                <a class="scroll-link" href="{% url 'thermal' %}">Тепловые расчеты</a>
             </li>
             <li>
-                <a class="scroll-link" href="{% url 'barrel' %}"><i class="fas fa-user"></i>Раcчеты бочек</a>
+                <a class="scroll-link" href="{% url 'barrel' %}">Раcчеты бочек</a>
             </li>
             <li>
-                <a class="scroll-link" href="{% url 'forming' %}"><i class="fas fa-pencil-alt"></i>Расчет вальцовки</a>
+                <a class="scroll-link" href="{% url 'forming' %}">Расчет вальцовки</a>
             </li>
+        </ul>
+        <ul class="list-unstyled menu-elements vmeste col-md-8 mx-auto">
+            <li>
+                <a href="/engineering-portal/catalog-cards/" class="link link--has-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 12.5V20C3.34034 20 3.67344 20 4 20M3 12.5V8V5H10.5L14 8H21V12.5M3 12.5H12H16.5H18.75H19.875H21M21 12.5V20C15.6129 20 10.5396 20 6 20"
+                              stroke="#101010" stroke-width="2"></path>
+                    </svg>
+                    Каталог карточек свойств металлопродукции</a>
+            </li>
+            <li>
+                <a href="https://vmeste.severstal.com/engineering-portal/">
+                    <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 9H15.5V15H8V11.5" stroke="#101010" stroke-width="2"></path>
+                        <path d="M19.3111 16.5V17.7075M19.3111 17.7075V20.9623L13.4 24H9.38889L3.68889 20.9623V17.7075M19.3111 17.7075L13.4 20.7453H9.38889L3.68889 17.7075M3.68889 17.7075V14.4528H2V9.46226H3.68889V7.07547L6.64444 1H16.3556L19.3111 7.07547V9.46226H21V14.4528H18.5"
+                              stroke="#101010" stroke-width="2"></path>
+                    </svg>
+                    Сообщество «Вместе»
+                </a>
+            </li>
+
         </ul>
     </nav>
     <!-- End sidebar -->
