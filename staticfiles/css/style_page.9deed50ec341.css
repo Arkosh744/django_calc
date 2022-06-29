@@ -7,18 +7,10 @@ html body {
 
 @font-face {
     font-family: 'Grtsk Peta';
-    src: url('../fonts/GrtskPeta-Medium.woff2') format('woff2');
+    src: url("../fonts/GrtskPeta-Medium.dc394fdb13ff.woff2") format('woff2');
     font-weight: 500;
     font-style: normal;
     font-display: swap;
-}
-
-.navbar {
-    border-bottom: 1px solid rgba(45, 45, 45, .1) !important;
-}
-
-footer {
-    border-top: 1px solid rgba(45, 45, 45, .1) !important;
 }
 
 /***** Wrapper *****/
