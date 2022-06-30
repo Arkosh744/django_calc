@@ -7,7 +7,7 @@ html body {
 
 @font-face {
     font-family: 'Grtsk Peta';
-    src: url('../fonts/GrtskPeta-Medium.woff2') format('woff2');
+    src: url("../fonts/GrtskPeta-Medium.dc394fdb13ff.woff2") format('woff2');
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -19,7 +19,7 @@ html body {
 
 footer {
     border-top: 1px solid rgba(45, 45, 45, .1) !important;
-    background: rgba(238, 238, 238, 0.6);
+    background: #d9d9d9;
 }
 
 /***** Wrapper *****/

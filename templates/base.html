@@ -25,8 +25,8 @@
 <div class="wrapper">
     <!-- Sidebar -->
     <nav class="sidebar">
-        <div class="logo col-md-8 mx-auto">
-            <h3><a href="{% url 'index' %}">Калькуляторы для инженеров</a></h3>
+        <div class="logo col-md-8 mx-auto pb-4">
+            <a href="{% url 'index' %}">Калькуляторы для инженеров</a>
         </div>
 
         <ul class="list-unstyled menu-elements col-md-8 mx-auto">
@@ -129,7 +129,7 @@
 
         {% block content %} {% endblock %}
 
-        <footer class="bg-primary-gradient" style="font-size: 75%">
+        <footer style="font-size: 75%">
             <div class="container py-4 mx-auto" style="max-width: 1420px;">
                 <div class="row justify-content-center">
                     <div class="col-lg-3 col-md-12 col-lg-9 offset-md-0 offset-lg-0 text-center text-lg-start d-flex flex-column item">
