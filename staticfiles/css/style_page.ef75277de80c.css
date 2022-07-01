@@ -1,5 +1,25 @@
-body {
+html body {
     margin: 0 auto;
+    font-family: "Grtsk Peta", sans-serif;
+    color: black;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'Grtsk Peta';
+    src: url("../fonts/GrtskPeta-Medium.dc394fdb13ff.woff2") format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+.navbar {
+    border-bottom: 1px solid rgba(45, 45, 45, .1) !important;
+}
+
+footer {
+    border-top: 1px solid rgba(45, 45, 45, .1) !important;
+    background: rgba(238, 238, 238, 0.6);
 }
 
 /***** Wrapper *****/
@@ -11,15 +31,17 @@ body {
 /***** Sidebar *****/
 
 .sidebar {
-    width: 265px;
+    min-width: 30vw;
     height: 91vh;
     position: fixed;
     top: 9vh;
-    left: -271px;
+    left: -150vw;
     z-index: 999;
+    display: flex;
+    flex-flow: column nowrap;
     background: #fff;
-    transition: all .3s;
-    box-shadow: 6px 0 30px rgb(51 51 51 / 50%);
+    transition: all .6s;
+    box-shadow: 2px 0 30px rgb(51 51 51 / 50%);
     text-align: left;
 }
 
@@ -28,9 +50,10 @@ body {
 }
 
 .sidebar .logo {
-    padding: 72px 20px 12px 20px;
-    margin-top: 20px;
-    border-bottom: 1px solid #444;
+    min-width: 300px;
+    max-width: 350px;
+    padding-top: 6vh;
+    border-bottom: 1px solid rgba(45, 45, 45, .1);
     transition: all .3s;
 }
 
@@ -40,14 +63,15 @@ body {
 }
 
 .sidebar ul.menu-elements {
-    padding: 10px 0;
-    border-bottom: 1px solid #444;
+    min-width: 300px;
+    max-width: 350px;
+    border-bottom: 1px solid rgba(45, 45, 45, .1);
     transition: all .3s;
 }
 
 .sidebar ul li a {
+    padding: 0.8vw 0;
     display: block;
-    padding: 10px 20px;
     border: 0;
     color: #000000;
 }
@@ -57,7 +81,7 @@ body {
 .sidebar ul li.active > a:hover,
 .sidebar ul li.active > a:focus {
     outline: 0;
-    background: #ffffff;
+    background: #efefef;
     text-decoration: underline;
     color: #000000;
 }
@@ -68,7 +92,7 @@ body {
 
 .sidebar ul li.active > a,
 a[aria-expanded="true"] {
-    background: #b9b9b9;
+    background: #d3d3d3;
     color: #000000;
 }
 
@@ -99,8 +123,9 @@ a[aria-expanded="true"] {
 .overlay {
     display: none;
     position: fixed;
+    top: 9vh;
     width: 100vw;
-    height: 100vh;
+    height: 91vh;
     background: rgba(51, 51, 51, 0.7);
     z-index: 998;
     opacity: 0;
@@ -115,32 +140,45 @@ a[aria-expanded="true"] {
 /***** Content *****/
 
 .content {
+    padding-top: 92px;
     width: 100%;
     transition: all 0.3s;
+    background: rgba(250, 250, 250, 0.5);
 }
 
 /***** Open Menu *****/
-.open-menu, .dismiss {
+.open-menu {
     width: 60px;
     height: 60px;
-    /*position: absolute;*/
-    /*top: 16px;*/
-    /*left: 16px;*/
+}
+
+.dismiss {
+    width: 60px;
+    height: 60px;
     transition: all .3s;
     background: #f4f4f4;
     border-radius: 0;
     text-align: center;
+    line-height: 35px;
     cursor: pointer;
     padding: 11px;
-}
-
-.open-menu {
-    z-index: 998;
-}
-
-.dismiss {
     display: none;
-    z-index: 999;
+}
+
+.header-bar-logo a img {
+    width: 1rem;
+    height: 0.9rem;
+    margin-right: 0.2rem;
+    border-radius: 0.2rem;
+}
+
+.header-bar-logo a svg {
+    width: 7rem;
+    margin-bottom: 6px;
+}
+
+.header-bar-menu a svg {
+    width: 5rem;
 }
 
 .div1 h3, .div2 h3 {
@@ -226,4 +264,24 @@ div .div-results {
     font-size: .8rem;
     align-items: center;
     color: black;
+    font-family: "Grtsk Peta", sans-serif;
+}
+
+.vmeste {
+    margin-top: auto;
+    margin-bottom: 4vw;
+    min-width: 300px;
+    max-width: 350px;
+}
+
+div .sidebar .vmeste li a svg {
+    margin-right: 1rem;
+    width: 24px;
+    height: 24px;
+}
+
+div .sidebar .vmeste li a {
+    display: flex;
+    align-items: center;
+    color: #000000;
 }

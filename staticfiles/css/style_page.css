@@ -52,7 +52,7 @@ footer {
 .sidebar .logo {
     min-width: 300px;
     max-width: 350px;
-    padding-top: 4vw;
+    padding-top: 6vh;
     border-bottom: 1px solid rgba(45, 45, 45, .1);
     transition: all .3s;
 }
