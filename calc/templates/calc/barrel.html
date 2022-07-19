@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %} Расчет бочек {% endblock %}
+{% block header %}
+    <title>Расчет бочек</title>
+    <link rel="stylesheet" href="{% static 'css/style_page.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles_barrels.css' %}">
+{% endblock %}
 
 {% block content %}
     <section class="wrapper flex-grow-1">

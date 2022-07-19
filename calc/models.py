@@ -87,7 +87,6 @@ class CalculatedResults(models.Model):
     result_change_rate = ArrayField(ArrayField(models.FloatField()), null=False)
 
 
-
 @dataclass
 class PreparedData:
     thickness: float
