@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block header %}
+    <title>Калькулятор вальцовки</title>
+    <link rel="stylesheet" href="{% static 'css/style_page.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style_tube.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="wrapper flex-grow-1">
+{#    <div class="parent py-5" id="content">#}
+{#        <div class="div1 card shadow-sm">#}
+{#            <h1>{{ _("Исходные данные") }}</h1>#}
+{#            <form method="post" autocomplete="off" id="submit-form">#}
+{#                {% csrf_token %}#}
+{#                {{ html_form }}#}
+{##}
+{##}
+{#                <button class="btn btn-calc btn-primary" type="submit" id="submit">{{ _("Расчет") }}</button>#}
+{#            </form>#}
+{##}
+{#            {% if error_variable %}#}
+{#                <p class=error_variable>{{ error_variable }}</p>#}
+{#            {% endif %}#}
+{#        </div>#}
+{##}
+{#        <div class="div-results card shadow-sm">#}
+{#            <div class="description-spoiler">#}
+{##}
+{#            </div>#}
+{##}
+{#            {% if tubes_values %}#}
+{#                <div class="div2">#}
+{#                    <h1>{{ _("Результаты расчета") }}</h1>#}
+{#                    <div class="chart" id="plotty">#}
+{#                        <script>#}
+{#                            let graphs = {{ tubes_values['plot'] | safe}};#}
+{#                            graphs.config = {#}
+{#                                displayModeBar: true,#}
+{#                                displaylogo: false,#}
+{#                                modeBarButtonsToRemove: ['toImage', 'pan2d', 'zoom2d', 'select2d',#}
+{#                                    'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d'],#}
+{#                                showLink: true,#}
+{#                                plotlyServerURL: "https://chart-studio.plotly.com",#}
+{#                                linkText: '{{ _('Edit Online') }}',#}
+{#                                modeBarButtonsToAdd: ['drawline']#}
+{#                            }#}
+{#                            Plotly.newPlot('plotty', graphs);#}
+{#                        </script>#}
+{#                    </div>#}
+{#                    <div class="text-results">#}
+{#                        <div class="table-result">#}
+{#                            <table class="plot-result">#}
+{#                                <tr style="border-top:1px solid black; border-bottom:1px solid black">#}
+{#                                    <td>{{ _('Предел текучести исходного материала') }}</td>#}
+{#                                    <td>{{ tubes_values['sigma_t'] }} {{ _('МПа') }}</td>#}
+{#                                </tr>#}
+{#                                <tr>#}
+{#                                    <td>{{ _('Усреднeнная по сечению величина пластической деформации при гибке листа толщиной') }} {{ form.tube_thickness.data }}#}
+{#                                        {{ _('мм') }}{{ _(' в заготовку радиусом ') }}{{ form.tube_radius.data }}{{ _('мм') }}</td>#}
+{#                                    <td>{{ tubes_values['PE_avg'] }}%</td>#}
+{#                                </tr>#}
+{#                                <tr>#}
+{#                                    <td>{{ _('Предел текучести после вальцовки') }}</td>#}
+{#                                    <td>{{ tubes_values['new_sigma_t'] }} {{ _('МПа') }}</td>#}
+{#                                </tr>#}
+{#                                <tr style="border-bottom:1px solid black">#}
+{#                                    <td>{{ _('Значение максимальных деформаций после вальцовки') }}:<br> {{ _('Сжимающих') }} <br> {{ _('Растягивающих') }}</td>#}
+{#                                    <td><br>{{ tubes_values['PE_min_max'][0] }} %<br> {{ tubes_values['PE_min_max'][1] }} %</td>#}
+{#                                </tr>#}
+{#                                <tr>#}
+{#                                    <td>{{ _('Усреднeнная по сечению величина пластической деформации после вальцовки и последующей разгибки листа') }}</td>#}
+{#                                    <td>{{ tubes_values['PE_razgib'] }}%</td>#}
+{#                                </tr>#}
+{#                                <tr>#}
+{#                                    <td>{{ _('Предел текучести после вальцовки и последующей разгибки') }}</td>#}
+{#                                    <td>{{ tubes_values['new_sigma_t_razgib'] }} {{ _('МПа') }}</td>#}
+{#                                </tr>#}
+{#                                <tr style="border-bottom:1px solid black">#}
+{#                                    <td>{{ _('Значение максимальных деформаций после вальцовки и разгибки') }}:<br> {{ _('Сжимающих') }} <br> {{ _('Растягивающих') }}</td>#}
+{#                                    <td><br>{{ tubes_values['PE_razgib_min_max'][0] }} %<br> {{ tubes_values['PE_razgib_min_max'][1] }} %</td>#}
+{#                                </tr>#}
+{#                            </table>#}
+                            {#                            <p class="form-text">#}
+                            {#                                *{{ _('Если предел текучести исходного материала не соответсвует точке начала пластических#}
+                            {#                    деформаций - необходимо изменить значение поля "Удлинение до начала пластических#}
+                            {#                    деформаций" в "Продвинутых настройках"') }}</p>#}
+{#                        </div>#}
+{#                        <div class="results-plot2">#}
+{#                            <div class="chart chart2" id="plotty2">#}
+{#                                <script>#}
+{#                                    let graphs2 = {{ tubes_values['plot2'] | safe}};#}
+{#                                    graphs2.config = {#}
+{#                                        displayModeBar: false,#}
+{#                                        displaylogo: false,#}
+{#                                        staticPlot: false,#}
+{#                                        modeBarButtonsToRemove: ['toImage', 'pan2d', 'zoom2d', 'select2d',#}
+{#                                            'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'toggleSpikelines'],#}
+{#                                    }#}
+{#                                    Plotly.newPlot('plotty2', graphs2);#}
+{#                                </script>#}
+{#                            </div>#}
+{#                            <div class="results-plot-gif">#}
+                                {#                                <img src="{{ url_for('static', filename=_('images/forming_animation.gif')) }}" alt=""#}
+                                {#                                     id="forming-gif">#}
+{#                                <video autoplay loop muted playsinline controls="controls" width="600px" height="400px">#}
+{#                                    <source src="{{ url_for('static', filename=_('images/forming_animation.mp4')) }}"#}
+{#                                            type="video/mp4">#}
+{#                                </video>#}
+{#                            </div>#}
+                            {#                            <p style="text-align: center; margin-left: -5%">{{ _("Внутренние волокна") }}</p>#}
+{#                        </div>#}
+{##}
+{#                    </div>#}
+{#                </div>#}
+{#            {% endif %}#}
+{#        </div>#}
+{#    </div>#}
+    </section>
+{% endblock %}
+

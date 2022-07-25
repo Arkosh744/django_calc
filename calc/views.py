@@ -405,6 +405,25 @@ def barrel(request):
     return render(request, 'calc/barrel.html')
 
 
-def forming(request):
-    html_form = FormingForm()
-    return render(request, 'calc/forming.html', context={'html_form': html_form})
+class FormingView(View):
+    html_forms = FormingForm()
+
+    def get(self, request):
+        return render(request, 'calc/forming.html',
+                      context={'html_forms': self.html_forms, })
+
+    def post(self, request):
+        return render(request, 'calc/forming.html',
+                      context={'html_forms': self.html_forms, })
+
+
+class WearView(View):
+    html_forms = None
+
+    def get(self, request):
+        return render(request, 'calc/wear.html',
+                      context={'html_forms': self.html_forms, })
+
+    def post(self, request):
+        return render(request, 'calc/wear.html',
+                      context={'html_forms': self.html_forms, })
