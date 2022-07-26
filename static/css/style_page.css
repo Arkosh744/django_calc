@@ -193,8 +193,8 @@ a[aria-expanded="true"] {
 
 .parent {
     display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
+    flex-flow: row wrap;
+    justify-content: space-around;
     align-content: flex-start;
     align-items: flex-start;
     margin: 0.5rem 1.5rem;
@@ -209,10 +209,6 @@ div .div1 {
     margin-bottom: 0.7rem;
 }
 
-div .div-results {
-    border: 0.05rem solid rgba(0, 0, 0, .125);
-}
-
 .parent .div-results {
     display: flex;
     flex-flow: row wrap;
@@ -220,6 +216,9 @@ div .div-results {
     align-content: flex-start;
     flex: 10 1 auto;
     margin: 0 0.5rem;
+    border: 0.05rem solid rgba(0, 0, 0, .125);
+    max-width: 78vw;
+
 }
 
 .content .header-bar {
@@ -259,7 +258,7 @@ div .div-results {
 
 .link-to-portal {
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
     line-height: .8rem;
     font-size: .8rem;
     align-items: center;
@@ -284,4 +283,8 @@ div .sidebar .vmeste li a {
     display: flex;
     align-items: center;
     color: #000000;
+}
+
+#content {
+    min-height: 55vh;
 }

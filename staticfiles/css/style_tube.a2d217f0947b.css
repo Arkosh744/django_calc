@@ -28,18 +28,22 @@ form div {
 }
 
 .div2 {
+    display: flex;
+    flex-direction: column;
     padding: 5px;
     width: 100%;
+    font-size: 0.8rem;
 }
 
-#plotty {
-    min-width: 600px;
-}
+/*#plotty {*/
+/*    min-width: 40vw;*/
+/*    max-width: 900px;*/
+/*}*/
 
-#plotty2 {
-    width: 55%;
-    min-width: 650px;
-}
+/*#plotty2 {*/
+/*    min-width: 40vw;*/
+/*    max-width: 900px;*/
+/*}*/
 
 .error_variable {
     color: #f32c2c;
@@ -59,7 +63,7 @@ summary {
 }
 
 td {
-    padding: 3px;
+    padding: 12px 3px;
 }
 
 tr td:first-child {
@@ -69,16 +73,12 @@ tr td:first-child {
 tr td:nth-child(2) {
     width: 10%;
     padding-left: 10px;
+    text-align: center;
 }
 
 .text-results {
     display: flex;
     flex-flow: column wrap;
-}
-
-.table-result {
-    width: 50%;
-    min-width: 600px;
 }
 
 .chart2 {
@@ -89,7 +89,7 @@ tr td:nth-child(2) {
     margin: 0 auto;
     padding: 10px 25px;
     display: flex;
-    flex-flow: row-reverse nowrap;
+    flex-flow: row-reverse wrap;
     align-items: flex-start;
     justify-content: flex-start;
 }
@@ -107,7 +107,7 @@ tr td:nth-child(2) {
     margin-bottom: 10px;
 }
 
-.methodics, .results-plot2 {
+.methodics {
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-start;
@@ -117,5 +117,6 @@ tr td:nth-child(2) {
 }
 
 div .text {
-    width: 70%;
+    max-width: 900px;
+    font-size: 0.8rem;
 }

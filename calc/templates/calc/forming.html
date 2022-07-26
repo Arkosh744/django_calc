@@ -27,24 +27,39 @@
                         {{ html_forms.tube_thickness.name.errors }}
                         {{ html_forms.tube_thickness }}
                     </div>
-                    <button class="btn btn-calc btn-vmeste-color" type="submit" value="calc" name="calc"
+                    <button class="btn btn-calc btn-vmeste-color mx-auto" type="submit" value="calc" name="calc"
                             id="submit">{{ _("Расчет") }}
                     </button>
                 </form>
 
             </div>
-        {% if plot %}
             <div class="div-results card shadow-sm">
                 <div class="description-spoiler">
-
+                    <div class="btn-spoiler">
+                        <button class="btn btn-light btn-methodics" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#methodics"
+                                aria-expanded="false">{{ "Описание методик расчетов" }}</button>
+                    </div>
+                    <div class="collapse methodics" id="methodics">
+                        <div class="text">
+                            <p>{{ "В основу формовки на вальцах положена схема изгиба листа между тремя или четырьмя валками. Для производства сварных труб чаще применяют четырехвалковые вальцы.Формовка листа производится путем гибки между верхним и нижними валками за несколько реверсивных движений (от 9 до 11). После формовки сформованный цилиндр стаскивается с верхнего валка." }}</p>
+                            <p>{{ "Для формовки трубы вальцовкой характерна равномерность деформация по всему поперечному сечению трубы.При этом соотношение диаметра трубы к толщине стенки таково, что положение нейтральной линии приближенно к средней линии и рассчитывается по аналитической формуле." }}</p>
+                            <p>{{ "Предупреждение: если пробу из трубы перед испытанием выпрямляют - это вносит дополнительные пластические деформации в образец. За более подробной консультацией обращайтесь " }}
+                                <a href="mailto:engineering@severstal.com">engineering@severstal.com</a></p></div>
+                        <div class="text-img">
+                            <img src="{% static "img/tube_forming/tubes_description_1.png" %}"
+                                 alt="">
+                        </div>
+                    </div>
                 </div>
-
                 {% if tubes_values %}
+
+
                     <div class="div2">
-                        <h1>{{ _("Результаты расчета") }}</h1>
-                        <div class="chart" id="plotty">
+                        <h3>{{ _("Результаты расчета") }}</h3>
+                        <div class="chart mx-auto" id="plotty">
                             <script>
-                                let graphs = {{ tubes_values }};
+                                let graphs = {{ tubes_values.plot | safe}};
                                 graphs.config = {
                                     displayModeBar: true,
                                     displaylogo: false,
@@ -58,76 +73,63 @@
                                 Plotly.newPlot('plotty', graphs);
                             </script>
                         </div>
-                        <div class="text-results">
-                            <div class="table-result">
-                                <table class="plot-result">
-                                    <tr style="border-top:1px solid black; border-bottom:1px solid black">
-                                        <td>{{ _('Предел текучести исходного материала') }}</td>
-                                        <td>{{ tubes_values }} {{ _('МПа') }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ _('Усреднeнная по сечению величина пластической деформации при гибке листа толщиной') }} {{ form.tube_thickness.data }}
-                                            {{ _('мм') }}{{ _(' в заготовку радиусом ') }}{{ form.tube_radius.data }}{{ _('мм') }}</td>
-                                        <td>{{ tubes_values }}%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ _('Предел текучести после вальцовки') }}</td>
-                                        <td>{{ tubes_values }} {{ _('МПа') }}</td>
-                                    </tr>
-                                    <tr style="border-bottom:1px solid black">
-                                        <td>{{ _('Значение максимальных деформаций после вальцовки') }}:<br> {{ _('Сжимающих') }}
-                                            <br> {{ _('Растягивающих') }}</td>
-                                        <td><br>{{ tubes_values }} %<br> {{ tubes_values }} %</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ _('Усреднeнная по сечению величина пластической деформации после вальцовки и последующей разгибки листа') }}</td>
-                                        <td>{{ tubes_values }}%</td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ _('Предел текучести после вальцовки и последующей разгибки') }}</td>
-                                        <td>{{ tubes_values }} {{ _('МПа') }}</td>
-                                    </tr>
-                                    <tr style="border-bottom:1px solid black">
-                                        <td>{{ _('Значение максимальных деформаций после вальцовки и разгибки') }}:<br> {{ _('Сжимающих') }}
-                                            <br> {{ _('Растягивающих') }}</td>
-                                        <td><br>{{ tubes_values }} %<br> {{ tubes_values }} %</td>
-                                    </tr>
-                                </table>
+                        <div class="table-result mx-auto">
+                            <table>
+                                <tr style="border-top:1px solid black; border-bottom:1px solid black">
+                                    <td>{{ _('Предел текучести исходного материала') }}</td>
+                                    <td>{{ tubes_values.sigma_t }} {{ _('МПа') }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ _('Усреднeнная по сечению величина пластической деформации при гибке листа толщиной') }} {{ html_forms.data.tube_thickness }}
+                                        {{ _('мм') }}{{ _(' в заготовку радиусом ') }}{{ html_forms.data.tube_radius }}{{ _('мм') }}</td>
+                                    <td>{{ tubes_values.PE_avg }}%</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ _('Предел текучести после вальцовки') }}</td>
+                                    <td>{{ tubes_values.new_sigma_t }} {{ _('МПа') }}</td>
+                                </tr>
+                                <tr style="border-bottom:1px solid black">
+                                    <td>{{ _('Значение максимальных деформаций после вальцовки') }}:<br> {{ _('Сжимающих') }}
+                                        <br> {{ _('Растягивающих') }}</td>
+                                    <td><br>{{ tubes_values.PE_min_max | first }}
+                                        %<br> {{ tubes_values.PE_min_max | last }} %
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{{ _('Усреднeнная по сечению величина пластической деформации после вальцовки и последующей разгибки листа') }}</td>
+                                    <td>{{ tubes_values.PE_razgib }}%</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ _('Предел текучести после вальцовки и последующей разгибки') }}</td>
+                                    <td>{{ tubes_values.new_sigma_t_razgib }} {{ _('МПа') }}</td>
+                                </tr>
+                                <tr style="border-bottom:1px solid black">
+                                    <td>{{ _('Значение максимальных деформаций после вальцовки и разгибки') }}:<br> {{ _('Сжимающих') }}
+                                        <br> {{ _('Растягивающих') }}</td>
+                                    <td><br>{{ tubes_values.PE_razgib_min_max | first }}
+                                        %<br> {{ tubes_values.PE_razgib_min_max | last }} %
+                                    </td>
+                                </tr>
+                            </table>
 
-                            </div>
-                            <div class="results-plot2">
-                                <div class="chart chart2" id="plotty2">
-                                    <script>
-                                        let graphs2 = {{ tubes_values }};
-                                        graphs2.config = {
-                                            displayModeBar: false,
-                                            displaylogo: false,
-                                            staticPlot: false,
-                                            modeBarButtonsToRemove: ['toImage', 'pan2d', 'zoom2d', 'select2d',
-                                                'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'toggleSpikelines'],
-                                        }
-                                        Plotly.newPlot('plotty2', graphs2);
-                                    </script>
-                                </div>
-                                <div class="results-plot-gif">
-                                    {#                                    <img src="{{ url_for('static', filename=_('images/forming_animation.gif')) }}"#}
-                                    {#                                         alt=""#}
-                                    {#                                         id="forming-gif">#}
-                                    {#                                    <video autoplay loop muted playsinline controls="controls" width="600px"#}
-                                    {#                                           height="400px">#}
-                                    {#                                        <source src="#}
-                                    {#                                                {{ url_for('static', filename=_('images/forming_animation.mp4')) }}"#}
-                                    {#                                                type="video/mp4">#}
-                                    {#                                    </video>#}
-                                </div>
-                                <p style="text-align: center; margin-left: -5%">{{ _("Внутренние волокна") }}</p>
-                            </div>
-
+                        </div>
+                        <div class="chart chart2 mx-auto" id="plotty2">
+                            <script>
+                                let graphs2 = {{ tubes_values.plot2 | safe }};
+                                graphs2.config = {
+                                    displayModeBar: false,
+                                    displaylogo: false,
+                                    staticPlot: false,
+                                    modeBarButtonsToRemove: ['toImage', 'pan2d', 'zoom2d', 'select2d',
+                                        'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'toggleSpikelines'],
+                                }
+                                Plotly.newPlot('plotty2', graphs2);
+                            </script>
                         </div>
                     </div>
                 {% endif %}
             </div>
-        {% endif %}
+
         </div>
     </section>
 {% endblock %}

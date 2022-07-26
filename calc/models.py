@@ -21,7 +21,7 @@ class TubeForming(models.Model):
         super(TubeForming, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.name}, {self.thickness} мм'
+        return f'{self.name.upper()}, {self.thickness} mm'
 
 
 class ChemistryThermal(models.Model):

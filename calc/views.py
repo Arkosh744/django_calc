@@ -19,7 +19,8 @@ from xlsxwriter.utility import xl_col_to_name
 
 from .forms.forming import FormingForm
 from .forms.thermal import ThermalForm, ThermalZones, ThermalZonesFormSet
-from .models import ThermalProps, PreparedData, ChemistryThermal, CalculatedResults
+from .models import ThermalProps, PreparedData, ChemistryThermal, CalculatedResults, TubeForming
+from .processing import tube_expander_forming
 from .processing.thermal import main as calc_results
 from django.utils import timezone
 
@@ -409,12 +410,34 @@ class FormingView(View):
     html_forms = FormingForm()
 
     def get(self, request):
+
         return render(request, 'calc/forming.html',
                       context={'html_forms': self.html_forms, })
 
     def post(self, request):
+        self.html_forms = FormingForm(request.POST)
+        material = TubeForming.objects.get(id=float(self.html_forms.data.get('material_select')))
+        tube_radius = float(self.html_forms.data.get('tube_radius'))
+        tube_thickness = float(self.html_forms.data.get('tube_thickness'))
+
+        if tube_radius <= 2 * tube_thickness:
+            error_variable = 'Ошибка: Радиус должен быть в 2 раза больше, чем толщина.'
+            return render(request, 'calc/forming.html',
+                          context={'html_forms': self.html_forms,
+                                   'error_variable': error_variable, })
+
+        tubes_values = tube_expander_forming.calc_new_tube_yield(props=material.tension_data,
+                                                                 thickness=tube_thickness,
+                                                                 radius=tube_radius)
+        print(tubes_values.keys())
+        if tubes_values['PE_avg'] <= 0.3:
+            error_variable = 'Пластические деформации в ходе расчета не обнаружены.'
+            return render(request, 'calc/forming.html',
+                          context={'html_forms': self.html_forms,
+                                   'error_variable': error_variable, })
+
         return render(request, 'calc/forming.html',
-                      context={'html_forms': self.html_forms, })
+                      context={'html_forms': self.html_forms, 'tubes_values': tubes_values, })
 
 
 class WearView(View):

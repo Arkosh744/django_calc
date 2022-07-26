@@ -17,6 +17,9 @@
     border-color: #002f6e;
 }
 
+.btn:hover {
+    color: #ffffff;
+}
 
 .btn-portal-link {
     background-color: rgb(16, 124, 65);
@@ -48,7 +51,7 @@
 }
 
 .btn-cards-link {
-    background-color: #3763f4;
+    background-color: #002f6e;
 }
 
 
