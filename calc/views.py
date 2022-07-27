@@ -449,7 +449,7 @@ class WearView(View):
 
     def post(self, request):
         self.html_forms = WearResistForm(request.POST)
-
+        print(self.html_forms.data)
         if not self.html_forms.is_valid():
             error_variable = 'Ошибка: Введите корректные данные.'
             return render(request, 'calc/wear.html',

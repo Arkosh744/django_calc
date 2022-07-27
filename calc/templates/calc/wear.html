@@ -33,7 +33,7 @@
                             получении эффективного решения из проката Северсталь.
                         </p>
                     </div>
-                    <div>
+                    <div style="max-width: 480px">
                         <p>Дополнительные материалы:</p>
                         <ul>
                             <li>
@@ -62,15 +62,15 @@
                             <div id="item-3">{{ html_forms.steel_grades_select.label }}</div>
                             <div id="item-4">{{ html_forms.steel_grades_select }}</div>
                             <div id="item-5">{{ html_forms.steel_grades_select_2 }}</div>
-                            <div id="item-6">{{ html_forms.price.label_tag }}</div>
-                            <div id="item-7">{{ html_forms.price }}</div>
-                            <div id="item-8">{{ html_forms.price_2 }}</div>
-                            <div id="item-9">{{ html_forms.thickness.label_tag }}</div>
-                            <div id="item-10">{{ html_forms.thickness }}</div>
-                            <div id="item-11">{{ html_forms.thickness_2 }}</div>
-                            <div id="item-12">{{ html_forms.abrasiveness.label_tag }}</div>
-                            <div id="item-13">{{ html_forms.abrasiveness }}</div>
-                            <div id="item-14">{{ html_forms.abrasiveness_2 }}</div>
+                            <div id="item-6">{{ html_forms.thickness.label_tag }}</div>
+                            <div id="item-7">{{ html_forms.thickness }}</div>
+                            <div id="item-8">{{ html_forms.thickness_2 }}</div>
+                            <div id="item-9">{{ html_forms.abrasiveness.label_tag }}</div>
+                            <div id="item-10">{{ html_forms.abrasiveness }}</div>
+                            <div id="item-11">{{ html_forms.abrasiveness_2 }}</div>
+                            <div id="item-12">{{ html_forms.price.label_tag }}</div>
+                            <div id="item-13">{{ html_forms.price }}</div>
+                            <div id="item-14">{{ html_forms.price_2 }}</div>
                         </div>
                         {% if error_variable %}
                             <div class="alert alert-danger m-4">
@@ -116,7 +116,7 @@
                                 {% endif %}
                             </p>
                         {% else %}
-                            <p>Для расчета изменения затрат необходимо указать стоимости каждого из материалов.</p>
+                            <p style="max-width: 400px">Для расчета изменения затрат необходимо указать стоимости каждого из материалов.</p>
                         {% endif %}
 
                     </div>
