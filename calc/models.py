@@ -58,6 +58,14 @@ class ThermalProps(models.Model):
         return f'{self.name}'
 
 
+class WearProps(models.Model):
+    name = models.CharField(max_length=100, null=False)
+    wear_value = models.FloatField(null=False)
+
+    def __str__(self):
+        return f'{self.name}'
+
+
 class CalculatedResults(models.Model):
 
     created_at = models.DateTimeField(null=False)

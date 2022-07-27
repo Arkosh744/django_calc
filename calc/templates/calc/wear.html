@@ -5,119 +5,124 @@
 {% block header %}
     <title>Калькулятор вальцовки</title>
     <link rel="stylesheet" href="{% static 'css/style_page.css' %}">
-    <link rel="stylesheet" href="{% static 'css/style_tube.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style_wearresistance.css' %}">
 {% endblock %}
 
 {% block content %}
     <section class="wrapper flex-grow-1">
-{#    <div class="parent py-5" id="content">#}
-{#        <div class="div1 card shadow-sm">#}
-{#            <h1>{{ _("Исходные данные") }}</h1>#}
-{#            <form method="post" autocomplete="off" id="submit-form">#}
-{#                {% csrf_token %}#}
-{#                {{ html_form }}#}
-{##}
-{##}
-{#                <button class="btn btn-calc btn-primary" type="submit" id="submit">{{ _("Расчет") }}</button>#}
-{#            </form>#}
-{##}
-{#            {% if error_variable %}#}
-{#                <p class=error_variable>{{ error_variable }}</p>#}
-{#            {% endif %}#}
-{#        </div>#}
-{##}
-{#        <div class="div-results card shadow-sm">#}
-{#            <div class="description-spoiler">#}
-{##}
-{#            </div>#}
-{##}
-{#            {% if tubes_values %}#}
-{#                <div class="div2">#}
-{#                    <h1>{{ _("Результаты расчета") }}</h1>#}
-{#                    <div class="chart" id="plotty">#}
-{#                        <script>#}
-{#                            let graphs = {{ tubes_values['plot'] | safe}};#}
-{#                            graphs.config = {#}
-{#                                displayModeBar: true,#}
-{#                                displaylogo: false,#}
-{#                                modeBarButtonsToRemove: ['toImage', 'pan2d', 'zoom2d', 'select2d',#}
-{#                                    'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d'],#}
-{#                                showLink: true,#}
-{#                                plotlyServerURL: "https://chart-studio.plotly.com",#}
-{#                                linkText: '{{ _('Edit Online') }}',#}
-{#                                modeBarButtonsToAdd: ['drawline']#}
-{#                            }#}
-{#                            Plotly.newPlot('plotty', graphs);#}
-{#                        </script>#}
-{#                    </div>#}
-{#                    <div class="text-results">#}
-{#                        <div class="table-result">#}
-{#                            <table class="plot-result">#}
-{#                                <tr style="border-top:1px solid black; border-bottom:1px solid black">#}
-{#                                    <td>{{ _('Предел текучести исходного материала') }}</td>#}
-{#                                    <td>{{ tubes_values['sigma_t'] }} {{ _('МПа') }}</td>#}
-{#                                </tr>#}
-{#                                <tr>#}
-{#                                    <td>{{ _('Усреднeнная по сечению величина пластической деформации при гибке листа толщиной') }} {{ form.tube_thickness.data }}#}
-{#                                        {{ _('мм') }}{{ _(' в заготовку радиусом ') }}{{ form.tube_radius.data }}{{ _('мм') }}</td>#}
-{#                                    <td>{{ tubes_values['PE_avg'] }}%</td>#}
-{#                                </tr>#}
-{#                                <tr>#}
-{#                                    <td>{{ _('Предел текучести после вальцовки') }}</td>#}
-{#                                    <td>{{ tubes_values['new_sigma_t'] }} {{ _('МПа') }}</td>#}
-{#                                </tr>#}
-{#                                <tr style="border-bottom:1px solid black">#}
-{#                                    <td>{{ _('Значение максимальных деформаций после вальцовки') }}:<br> {{ _('Сжимающих') }} <br> {{ _('Растягивающих') }}</td>#}
-{#                                    <td><br>{{ tubes_values['PE_min_max'][0] }} %<br> {{ tubes_values['PE_min_max'][1] }} %</td>#}
-{#                                </tr>#}
-{#                                <tr>#}
-{#                                    <td>{{ _('Усреднeнная по сечению величина пластической деформации после вальцовки и последующей разгибки листа') }}</td>#}
-{#                                    <td>{{ tubes_values['PE_razgib'] }}%</td>#}
-{#                                </tr>#}
-{#                                <tr>#}
-{#                                    <td>{{ _('Предел текучести после вальцовки и последующей разгибки') }}</td>#}
-{#                                    <td>{{ tubes_values['new_sigma_t_razgib'] }} {{ _('МПа') }}</td>#}
-{#                                </tr>#}
-{#                                <tr style="border-bottom:1px solid black">#}
-{#                                    <td>{{ _('Значение максимальных деформаций после вальцовки и разгибки') }}:<br> {{ _('Сжимающих') }} <br> {{ _('Растягивающих') }}</td>#}
-{#                                    <td><br>{{ tubes_values['PE_razgib_min_max'][0] }} %<br> {{ tubes_values['PE_razgib_min_max'][1] }} %</td>#}
-{#                                </tr>#}
-{#                            </table>#}
-                            {#                            <p class="form-text">#}
-                            {#                                *{{ _('Если предел текучести исходного материала не соответсвует точке начала пластических#}
-                            {#                    деформаций - необходимо изменить значение поля "Удлинение до начала пластических#}
-                            {#                    деформаций" в "Продвинутых настройках"') }}</p>#}
-{#                        </div>#}
-{#                        <div class="results-plot2">#}
-{#                            <div class="chart chart2" id="plotty2">#}
-{#                                <script>#}
-{#                                    let graphs2 = {{ tubes_values['plot2'] | safe}};#}
-{#                                    graphs2.config = {#}
-{#                                        displayModeBar: false,#}
-{#                                        displaylogo: false,#}
-{#                                        staticPlot: false,#}
-{#                                        modeBarButtonsToRemove: ['toImage', 'pan2d', 'zoom2d', 'select2d',#}
-{#                                            'lasso2d', 'zoomIn2d', 'zoomOut2d', 'autoScale2d', 'toggleSpikelines'],#}
-{#                                    }#}
-{#                                    Plotly.newPlot('plotty2', graphs2);#}
-{#                                </script>#}
-{#                            </div>#}
-{#                            <div class="results-plot-gif">#}
-                                {#                                <img src="{{ url_for('static', filename=_('images/forming_animation.gif')) }}" alt=""#}
-                                {#                                     id="forming-gif">#}
-{#                                <video autoplay loop muted playsinline controls="controls" width="600px" height="400px">#}
-{#                                    <source src="{{ url_for('static', filename=_('images/forming_animation.mp4')) }}"#}
-{#                                            type="video/mp4">#}
-{#                                </video>#}
-{#                            </div>#}
-                            {#                            <p style="text-align: center; margin-left: -5%">{{ _("Внутренние волокна") }}</p>#}
-{#                        </div>#}
-{##}
-{#                    </div>#}
-{#                </div>#}
-{#            {% endif %}#}
-{#        </div>#}
-{#    </div>#}
+        <div class="parent" id="content">
+            <div class="card shadow-sm p-4">
+                <h3 class="mx-auto">Калькулятор износа</h3>
+                <div class="d-flex flex-lg-row">
+                    <div class="card-description">
+                        <p>
+                            Калькулятор позволяет определить изменение срока службы изделия и затрат на материал
+                            футеровки/покрытия в зависимости от используемой марки стали, перемещаемой сыпучей среды и
+                            толщины.
+                            Введите данные по известному Вам кейсу эксплуатации и целевые значения, нажмите кнопку
+                            "Расчет"
+                        </p>
+                        <p>
+                            В расчете используются результаты лабораторных испытаний различных марок стали и сыпучих
+                            сред.
+                            Пожалуйста, обратитесь к нам по адресу
+                            <a href="mailto:engineering@severstal.com">engineering@severstal.com</a>
+                            если Вы заинтересованы в проведении лабораторных исследований футеровок, перерабатываемых
+                            пород
+                            и
+                            получении эффективного решения из проката Северсталь.
+                        </p>
+                    </div>
+                    <div>
+                        <p>Дополнительные материалы:</p>
+                        <ul>
+                            <li>
+                                <a href="https://vmeste.severstal.com/industries/mechanical-engineering/kak-otsenit-iznosostoykost-stali/">Описание
+                                    методики лабораторных испытаний</a></li>
+                            <li>
+                                <a href="https://vmeste.severstal.com/engineering-portal/publications/kuzov-cariernogo-samosvala/">Пример
+                                    эффективного применения износостойкого проката Северсталь</a></li>
+                            <li><a href="https://severstal.com/upload/iblock/70b/Vysokoprochnye-stali_06.06.22.pdf">Подробная
+                                информация
+                                по высокопрочному прокату Северсталь (буклет
+                                PDF)</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 forms">
+
+                <div class="card shadow-sm form mx-4">
+                    <form action="{% url 'wear-resistance' %}" method="post" autocomplete="off" id="submit-form">
+                        {% csrf_token %}
+                        <div class="angry-grid mt-2 px-4">
+                            <div id="item-0">&nbsp;</div>
+                            <div id="item-1">Известный кейс эксплуатации</div>
+                            <div id="item-2">Исследуемый кейс эксплуатации</div>
+                            <div id="item-3">{{ html_forms.steel_grades_select.label }}</div>
+                            <div id="item-4">{{ html_forms.steel_grades_select }}</div>
+                            <div id="item-5">{{ html_forms.steel_grades_select_2 }}</div>
+                            <div id="item-6">{{ html_forms.price.label_tag }}</div>
+                            <div id="item-7">{{ html_forms.price }}</div>
+                            <div id="item-8">{{ html_forms.price_2 }}</div>
+                            <div id="item-9">{{ html_forms.thickness.label_tag }}</div>
+                            <div id="item-10">{{ html_forms.thickness }}</div>
+                            <div id="item-11">{{ html_forms.thickness_2 }}</div>
+                            <div id="item-12">{{ html_forms.abrasiveness.label_tag }}</div>
+                            <div id="item-13">{{ html_forms.abrasiveness }}</div>
+                            <div id="item-14">{{ html_forms.abrasiveness_2 }}</div>
+                        </div>
+                        {% if error_variable %}
+                            <div class="alert alert-danger m-4">
+                                <p>{{ error_variable }}</p>
+                            </div>
+                        {% endif %}
+                        <button class="btn btn-calc btn-vmeste-color mx-auto" type="submit" value="calc" name="calc"
+                                id="submit">{{ _("Расчет") }}
+                        </button>
+                    </form>
+                    <div class="text-muted">
+                        <ul>*Справочные значения абразивности:
+                            <li>Вскрышная порода угольного месторождения: 0,01</li>
+                            <li>Железная руда: 0,1</li>
+                            <li>Вскрышная порода золотоносного месторождения: 0,3</li>
+                        </ul>
+                    </div>
+
+                </div>
+                {% if wear_results %}
+                    <div class="card shadow-sm results px-4 pb-4 mt-4">
+                        <h3>{{ _("Результаты расчета") }}</h3>
+                        <p>Срок службы:
+                            {% if wear_results.lifespan_color == "green" %}
+                                <span class="text-success"> Увеличение на {{ wear_results.lifespan_new }}%</span>
+                            {% else %}
+                                <span class="text-danger"> Снижение на {{ wear_results.lifespan_new }}%</span>
+                            {% endif %}
+                        </p>
+                        <p>Масса:
+                            {% if wear_results.weight_color == "green" %}
+                                <span class="text-success"> Увеличение на {{ wear_results.weight_new }}%</span>
+                            {% else %}
+                                <span class="text-danger"> Снижение на {{ wear_results.weight_new }}%</span>
+                            {% endif %}
+                        </p>
+                        {% if wear_results.price_new %}
+                            <p>Затраты:
+                                {% if wear_results.price_color == "green" %}
+                                    <span class="text-success"> Снижение на {{ wear_results.price_new }}%</span>
+                                {% else %}
+                                    <span class="text-danger"> Увеличение на {{ wear_results.price_new }}%</span>
+                                {% endif %}
+                            </p>
+                        {% else %}
+                            <p>Для расчета изменения затрат необходимо указать стоимости каждого из материалов.</p>
+                        {% endif %}
+
+                    </div>
+                {% endif %}
+            </div>
+        </div>
     </section>
 {% endblock %}
 

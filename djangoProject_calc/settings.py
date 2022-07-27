@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
 ALLOWED_HOSTS = ['127.0.0.1', 'calc-sever-django.herokuapp.com', 'steel-calc.mobileapp.severstal.com']
 CSRF_TRUSTED_ORIGINS = ['https://calc-sever-django.herokuapp.com/',
                         'https://steel-calc.mobileapp.severstal.com']

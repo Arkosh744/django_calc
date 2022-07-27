@@ -19,7 +19,8 @@ from xlsxwriter.utility import xl_col_to_name
 
 from .forms.forming import FormingForm
 from .forms.thermal import ThermalForm, ThermalZones, ThermalZonesFormSet
-from .models import ThermalProps, PreparedData, ChemistryThermal, CalculatedResults, TubeForming
+from .forms.wear_resistance import WearResistForm
+from .models import ThermalProps, PreparedData, ChemistryThermal, CalculatedResults, TubeForming, WearProps
 from .processing import tube_expander_forming
 from .processing.thermal import main as calc_results
 from django.utils import timezone
@@ -429,7 +430,6 @@ class FormingView(View):
         tubes_values = tube_expander_forming.calc_new_tube_yield(props=material.tension_data,
                                                                  thickness=tube_thickness,
                                                                  radius=tube_radius)
-        print(tubes_values.keys())
         if tubes_values['PE_avg'] <= 0.3:
             error_variable = 'Пластические деформации в ходе расчета не обнаружены.'
             return render(request, 'calc/forming.html',
@@ -441,12 +441,61 @@ class FormingView(View):
 
 
 class WearView(View):
-    html_forms = None
+    html_forms = WearResistForm()
 
     def get(self, request):
         return render(request, 'calc/wear.html',
                       context={'html_forms': self.html_forms, })
 
     def post(self, request):
+        self.html_forms = WearResistForm(request.POST)
+
+        if not self.html_forms.is_valid():
+            error_variable = 'Ошибка: Введите корректные данные.'
+            return render(request, 'calc/wear.html',
+                          context={'html_forms': self.html_forms, 'error_variable': error_variable})
+
+        material = WearProps.objects.get(id=float(self.html_forms.data.get('steel_grades_select')))
+        material_2 = WearProps.objects.get(id=float(self.html_forms.data.get('steel_grades_select_2')))
+        lifespan = 6000
+        thickness = float(self.html_forms.data.get('thickness'))
+        thickness_2 = float(self.html_forms.data.get('thickness_2'))
+        if thickness <= 0 or thickness_2 <= 0:
+            error_variable = 'Ошибка: Толщина должна быть больше 0.'
+            return render(request, 'calc/wear.html',
+                          context={'html_forms': self.html_forms, 'error_variable': error_variable})
+
+        abrasiveness = float(self.html_forms.data.get('abrasiveness'))
+        abrasiveness_2 = float(self.html_forms.data.get('abrasiveness_2'))
+        if abrasiveness <= 0 or abrasiveness_2 <= 0:
+            error_variable = 'Ошибка: Абразивность должна быть больше 0.'
+            return render(request, 'calc/wear.html',
+                          context={'html_forms': self.html_forms, 'error_variable': error_variable})
+
+        price = float(self.html_forms.data.get('price'))
+        price_2 = float(self.html_forms.data.get('price_2'))
+
+        lifespan_2 = (lifespan * material_2.wear_value * thickness_2 * abrasiveness) / (
+                    material.wear_value * thickness * abrasiveness_2)
+        lifespan_new = round(((lifespan_2 - lifespan) / lifespan)*100, 1)
+        weight_new = round(((thickness_2 - thickness) / thickness)*100, 1)
+
+        lifespan_color = "green" if lifespan_new >= 0 else "red"
+        weight_color = "green" if weight_new <= 0 else "red"
+
+        wear_results = {'lifespan_new': abs(lifespan_new),
+                        'weight_new': abs(weight_new),
+                        'lifespan_color': lifespan_color,
+                        'weight_color': weight_color}
+        if price > 0 and price_2 > 0:
+            total_price = (price * thickness) / lifespan
+            total_price_2 = (price_2 * thickness_2) / lifespan_2
+            print(thickness, thickness_2, lifespan, lifespan_2)
+            print(total_price, total_price_2)
+            price_new = round(((total_price_2 - total_price) / total_price)*100, 1)
+            price_color = "green" if price_new <= 0 else "red"
+            wear_results['price_color'] = price_color
+            wear_results['price_new'] = abs(price_new)
+
         return render(request, 'calc/wear.html',
-                      context={'html_forms': self.html_forms, })
+                      context={'html_forms': self.html_forms, 'wear_results': wear_results, })
